@@ -1,0 +1,31 @@
+.list {
+    height: 912px;
+}
+
+.container {
+    overflow: scroll;
+    overflow-x: hidden;
+    display: flex; 
+    flex-direction: column;
+    gap: 10px;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    width: 568px;
+    justify-content: space-between;
+}
+
+.flex {
+    display: flex;
+}
+
+.alignCenter {
+    align-items: center;
+}
+
+.order {
+    justify-content: flex-end;
+    align-items: center;
+}

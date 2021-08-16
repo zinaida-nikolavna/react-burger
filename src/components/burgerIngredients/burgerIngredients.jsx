@@ -4,21 +4,19 @@ import PropTypes from 'prop-types';
 import {dataPropTypes} from '../../utils/data';
 
 // Вкладки меню: Булки, соусы, начинки
-const TabBurger = (props: any) => (
+const TabBurger = (props) => (
     <>
         <h2 className='text text_type_main-medium mb-6'>{props.title}</h2>
         <div className={`${burgerIngredientsStyles.list} mb-2 pr-4 pl-4`}>
-            {props.data.map((item: any) => (
-                <div key={item._id}>
-                    <CartBurger data={item.type === props.type ? item : null} />                                     
-                </div>
+            {props.data.map((item) => (
+                <CartBurger key={item._id} data={item.type === props.type ? item : null} />                                     
             ))}
         </div>
     </> 
 )
 
 // Карточка части бургера
-const CartBurger = (props: any) => {
+const CartBurger = (props) => {
     if (!props.data) {
         return null;
     } else {
@@ -36,7 +34,7 @@ const CartBurger = (props: any) => {
     }
 }
 
-function BurgerIngredients(props: any) {
+function BurgerIngredients(props) {
     const burgerIngredientsHeight = window.innerHeight - 250;
     return (
         <section>

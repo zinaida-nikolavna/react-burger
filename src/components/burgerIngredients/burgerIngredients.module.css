@@ -1,0 +1,53 @@
+.tabs {
+    display: flex;
+    list-style-type: none;
+}
+
+.section {
+    height: 716px;
+    overflow: scroll;
+    overflow-x: hidden; 
+}
+
+.tab {
+    width: 200px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono',Arial, sans-serif;
+}
+
+.tab:hover {
+    cursor: pointer;
+}
+
+.activeTab {
+    border-bottom: solid 2px #4C4CFF;
+}
+
+.list {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.cart {
+    position: relative;
+    width: 272px;
+    height: 208px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+}
+
+.name {
+   height: 48px;
+   text-align: center;
+}

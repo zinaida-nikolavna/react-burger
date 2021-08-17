@@ -1,0 +1,11 @@
+.main {
+    width: 1280px;
+    display: flex;
+    margin: 0 auto;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.header {
+    background: #1C1C21;
+}

@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-p, ul, h5 {
+p, ul, h5, h3, h1 {
   margin: 0;
   padding: 0;
 }

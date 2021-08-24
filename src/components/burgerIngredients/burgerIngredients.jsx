@@ -1,40 +1,56 @@
+import {useState} from 'react';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../utils/data';
+import {dataPropTypes} from '../../utils/PropTypes';
+import Modal from '../modal/modal';
+import IngredientDetails from '../IngredientDetails/IngredientDetails'
 
 // Вкладки меню: Булки, соусы, начинки
-const TabBurger = (props) => (
+const TabBurger = ({data, type, title}) => (
     <>
-        <h2 className='text text_type_main-medium mb-6'>{props.title}</h2>
+        <h2 className='text text_type_main-medium mb-6'>{title}</h2>
         <div className={`${burgerIngredientsStyles.list} mb-2 pr-4 pl-4`}>
-            {props.data.map((item) => (
-                <CartBurger key={item._id} data={item.type === props.type ? item : null} />                                     
+            {data.map((item) => (
+                <CartBurger key={item._id} data={item.type === type ? item : null} />                                     
             ))}
         </div>
     </> 
 )
 
 // Карточка части бургера
-const CartBurger = (props) => {
-    if (!props.data) {
+const CartBurger = ({data}) => {
+    const [isOpenModal, setModal] = useState(false);
+
+    if (!data) {
         return null;
     } else {
         return (
-            <div className={`${burgerIngredientsStyles.cart} mb-8`}>
-                <Counter count={1} size='default' />
-                <img src={props.data.image} alt='изображение части бургера'/>
-                <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
-                    <p className='text text_type_digits-default mr-2'>{props.data.price}</p>
-                    <CurrencyIcon type='primary' />
+            <>
+                <Modal title='Детали ингредиента' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
+                    <IngredientDetails 
+                        image={data.image}
+                        name={data.name}
+                        calories={data.calories}
+                        proteins={data.proteins}
+                        fat={data.fat}
+                        carbohydrates={data.carbohydrates} />
+                </Modal>
+                <div className={`${burgerIngredientsStyles.cart} mb-8`} onClick={() => setModal(true)}>
+                    <Counter count={1} size='default' />
+                    <img src={data.image} alt='изображение ингредиента'/>
+                    <div className={`${burgerIngredientsStyles.price} mt-1 mb-1`}>
+                        <p className='text text_type_digits-default mr-2'>{data.price}</p>
+                        <CurrencyIcon type='primary' />
+                    </div>
+                    <h5 className={`${burgerIngredientsStyles.name} text text_type_main-default`}>{data.name}</h5>
                 </div>
-                <h5 className={`${burgerIngredientsStyles.name} text text_type_main-default`}>{props.data.name}</h5>
-            </div>                                         
+            </>                                         
         );
     }
 }
 
-function BurgerIngredients(props) {
+function BurgerIngredients({data}) {
     const burgerIngredientsHeight = window.innerHeight - 250;
     return (
         <section>
@@ -47,9 +63,9 @@ function BurgerIngredients(props) {
                 </ul>
             </nav>
             <div style={{ height: burgerIngredientsHeight, overflow: 'scroll', 'overflowX': 'hidden' }}>
-                <TabBurger data={props.data} title='Булки' type='bun'/>
-                <TabBurger data={props.data} title='Соусы' type='sauce'/>
-                <TabBurger data={props.data} title='Начинки' type='main'/>
+                <TabBurger data={data} title='Булки' type='bun'/>
+                <TabBurger data={data} title='Соусы' type='sauce'/>
+                <TabBurger data={data} title='Начинки' type='main'/>
             </div>
         </section>
     );

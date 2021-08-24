@@ -1,12 +1,17 @@
+import {useState} from 'react';
 import burgerConstructorStyles from './burgerConstructor.module.css';
 import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../utils/data' 
+import {dataPropTypes} from '../../utils/PropTypes';
+import Modal from '../modal/modal'; 
+import OrderDetails from '../orderDetails/orderDetails'
 
-function BurgerConstructor(props) {
+function BurgerConstructor({data}) {
+    const [isOpenModal, setModal] = useState(false);
+
     const burgerConstructorHeight = window.innerHeight - 500;
     // находим первый в массиве элемент с типом булка
-    const bun = props.data.find(item => {
+    const bun = data.find(item => {
         return item.type === 'bun';
     })
     return (
@@ -20,7 +25,7 @@ function BurgerConstructor(props) {
                     thumbnail={bun.image} />
             </div>    
             <div style={{ height: burgerConstructorHeight }} className={`${burgerConstructorStyles.container} pr-2 mt-2 mb-2`}>
-                {props.data.map((item) => (
+                {data.map((item) => (
                     <div key={item._id} className={burgerConstructorStyles.listItem}>
                         {item.type !== 'bun' && <DragIcon type="primary" />}
                         {item.type !== 'bun' && 
@@ -46,10 +51,13 @@ function BurgerConstructor(props) {
                     <p className="text text_type_digits-medium mr-2">610</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="large">
+                <Button type="primary" size="large" onClick={() => setModal(true)}>
                     Оформить заказ
                 </Button>
             </div>
+            <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
+                <OrderDetails />
+            </Modal>
         </section>
     );
   }

@@ -18,7 +18,13 @@ function App() {
   React.useEffect(() => {
     const fetchData = () => {
       fetch(FETCH_URL)
-        .then(res => res.json())
+        .then(res => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return Promise.reject(`Ошибка ${res.status}`);
+          }
+        })
         .then(data => setState(data.data))
         .catch(() => {
           setIsError(true);

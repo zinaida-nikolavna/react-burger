@@ -35,3 +35,8 @@ IngredientDetails.propTypes = {
     fat: PropTypes.number,
     carbohydrates: PropTypes.number
 };
+
+Items.propTypes = {
+    title: PropTypes.string,
+    characteristic: PropTypes.number
+};

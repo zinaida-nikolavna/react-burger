@@ -1,21 +1,22 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import AppHeader from '../header/header';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import appStyles from './app.module.css';
+import {AppContext} from '../../utils/appContext.js';
 
 const FETCH_URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
-  const [burgerData, setState] = React.useState([]);
-  const [isError, setIsError] = React.useState(false);
+  const [burgerData, setState] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const styles = {
     height: window.innerHeight,
     overflow: 'hidden'
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = () => {
       fetch(FETCH_URL)
         .then(res => {
@@ -46,8 +47,10 @@ function App() {
           <AppHeader />
         </div>
         <main className={appStyles.main}>
-          {!!burgerData.length && <BurgerIngredients data={burgerData}/>}
-          {!!burgerData.length && <BurgerConstructor data={burgerData}/>}
+          <AppContext.Provider value={burgerData}>
+            {!!burgerData.length && <BurgerIngredients />}
+            {!!burgerData.length && <BurgerConstructor />}
+          </AppContext.Provider>
         </main>
       </div>  
     );

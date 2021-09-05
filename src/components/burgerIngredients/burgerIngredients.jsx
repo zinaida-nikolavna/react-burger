@@ -1,17 +1,20 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
 import Modal from '../modal/modal';
 import TabBurger from '../tabBurger/tabBurger';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import {IngredientsContext} from '../../utils/appContext.js';
 
 function BurgerIngredients() {
     const burgerIngredientsHeight = window.innerHeight - 250;
     const [isOpenModal, setModal] = useState(false); 
     const [ingredients, setItem] = useState(null);
+    const [ingredientsData, setIngredients] = useContext(IngredientsContext);
 
     const OpenModal = (item) => {
+        setIngredients([...ingredientsData, item]); // добавляем в контекст новый ингредиент из конструктора
         setModal(true);
-        setItem(item);
+        setItem(item); // сетим ингредиент для дальнейшего использования в верстке
     }
 
     return (

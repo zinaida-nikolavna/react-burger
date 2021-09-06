@@ -1,20 +1,20 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
-import PropTypes from 'prop-types';
-import {dataPropTypes} from '../../utils/PropTypes';
 import Modal from '../modal/modal';
 import TabBurger from '../tabBurger/tabBurger';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import {IngredientsContext} from '../../utils/appContext.js';
 
-function BurgerIngredients({data}) {
+function BurgerIngredients() {
     const burgerIngredientsHeight = window.innerHeight - 250;
-
     const [isOpenModal, setModal] = useState(false); 
     const [ingredients, setItem] = useState(null);
+    const [ingredientsData, setIngredients] = useContext(IngredientsContext);
 
     const OpenModal = (item) => {
+        setIngredients([...ingredientsData, item]); // добавляем в контекст новый ингредиент из конструктора
         setModal(true);
-        setItem(item);
+        setItem(item); // сетим ингредиент для дальнейшего использования в верстке
     }
 
     return (
@@ -38,16 +38,12 @@ function BurgerIngredients({data}) {
                 </ul>
             </nav>
             <div style={{ height: burgerIngredientsHeight, overflow: 'scroll', 'overflowX': 'hidden' }}>
-                <TabBurger data={data} title='Булки' type='bun' openIngredientsModal={OpenModal}/>
-                <TabBurger data={data} title='Соусы' type='sauce' openIngredientsModal={OpenModal}/>
-                <TabBurger data={data} title='Начинки' type='main' openIngredientsModal={OpenModal}/>
+                <TabBurger title='Булки' type='bun' openIngredientsModal={OpenModal}/>
+                <TabBurger title='Соусы' type='sauce' openIngredientsModal={OpenModal}/>
+                <TabBurger title='Начинки' type='main' openIngredientsModal={OpenModal}/>
             </div>
         </section>
     );
   }
   
   export default BurgerIngredients;
-
-  BurgerIngredients.propTypes = {
-    data: PropTypes.arrayOf(dataPropTypes.isRequired).isRequired
-  }; 

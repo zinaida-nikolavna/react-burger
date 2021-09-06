@@ -1,36 +1,34 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import AppHeader from '../header/header';
 import BurgerIngredients from '../burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../burgerConstructor/burgerConstructor';
 import appStyles from './app.module.css';
-
-const FETCH_URL = 'https://norma.nomoreparties.space/api/ingredients';
+import {AppContext} from '../../utils/appContext.js';
+import {IngredientsContext} from '../../utils/appContext.js';
+import {fetchData} from '../../utils/src.js';
 
 function App() {
-  const [burgerData, setState] = React.useState([]);
-  const [isError, setIsError] = React.useState(false);
+  const [burgerData, setState] = useState([]);
+  const [isError, setIsError] = useState(false);
+  const [ingredientsData, setIngredients] = useState([]);
 
   const styles = {
     height: window.innerHeight,
     overflow: 'hidden'
   };
 
-  React.useEffect(() => {
-    const fetchData = () => {
-      fetch(FETCH_URL)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return Promise.reject(`Ошибка ${res.status}`);
-          }
-        })
-        .then(data => setState(data.data))
-        .catch(() => {
-          setIsError(true);
-        });
-    }
-      fetchData();
+  useEffect(() => { 
+    const getData = async () => {
+      try {
+        const res = await fetchData();
+        const data = await res;
+        setState(data.data);
+      }
+      catch {
+        setIsError(true);
+      }
+    }; 
+    getData();
   }, []);
 
   if (isError) {
@@ -46,8 +44,12 @@ function App() {
           <AppHeader />
         </div>
         <main className={appStyles.main}>
-          {!!burgerData.length && <BurgerIngredients data={burgerData}/>}
-          {!!burgerData.length && <BurgerConstructor data={burgerData}/>}
+          <IngredientsContext.Provider value={[ingredientsData, setIngredients]}>
+            <AppContext.Provider value={burgerData}>
+              {!!burgerData.length && <BurgerIngredients />}
+              {!!burgerData.length && <BurgerConstructor />}
+            </AppContext.Provider>
+          </IngredientsContext.Provider>
         </main>
       </div>  
     );

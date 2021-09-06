@@ -1,9 +1,16 @@
 .list {
-    height: 912px;
+    height: 720px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wrapper {
+    max-height: 450px;
 }
 
 .container {
-    overflow: scroll;
+    max-height: 450px;
     overflow-x: hidden;
     display: flex; 
     flex-direction: column;

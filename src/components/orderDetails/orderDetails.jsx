@@ -1,11 +1,12 @@
 import orderDetailsStyles from './orderDetails.module.css';
+import PropTypes from 'prop-types';
 
-function OrderDetails({orderNumber, isError, isWithoutBun}) {
-    if (isError || isWithoutBun) {
+function OrderDetails({orderNumber, isError, isWithoutBun, isLoading}) {
+    if (isError || isWithoutBun || isLoading) {
         return (
             <div className={`${orderDetailsStyles.order} pl-25 pr-25`}>
                 <div className="text text_type_main-medium mb-15">
-                {isWithoutBun ? 'Добавьте в бургер булочку' : 'Что-то пошло не так... Перезагрузите страницу'}
+                {isWithoutBun ? 'Добавьте в бургер булочку' : isLoading ? 'Загрузка' : 'Что-то пошло не так... Перезагрузите страницу'}
                 </div>
             </div>
         )
@@ -23,3 +24,10 @@ function OrderDetails({orderNumber, isError, isWithoutBun}) {
 }
 
 export default OrderDetails;
+
+OrderDetails.propTypes = {
+    orderNumber: PropTypes.number,
+    isError: PropTypes.bool,
+    isWithoutBun: PropTypes.bool,
+    isLoading: PropTypes.bool
+};

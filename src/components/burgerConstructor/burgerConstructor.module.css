@@ -1,8 +1,10 @@
 .list {
     height: 720px;
+    width: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .wrapper {
@@ -20,7 +22,6 @@
 .listItem {
     display: flex;
     align-items: center;
-    width: 568px;
     justify-content: space-between;
 }
 

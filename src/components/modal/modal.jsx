@@ -5,13 +5,14 @@ import ModalOverlay from '../modalOverlay/modalOverlay';
 import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
+
 function Modal({onModalClose, title, isOpened, children}) {
 
     // закрываем модальное окно по Escape
     const keyDown = useCallback (
         e => {
             if (e.key === 'Escape') {
-                onModalClose()
+                onModalClose();
             }
         },
         [onModalClose]

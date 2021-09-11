@@ -82,8 +82,8 @@ function BurgerIngredient({ingredient, id, index, deleteIngredient}) {
 export default BurgerIngredient;
 
 BurgerIngredient.propTypes = {
-    ingredient: PropTypes.object,
-    id: PropTypes.string,
-    index: PropTypes.number,
-    deleteIngredient: PropTypes.func
+    ingredient: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    deleteIngredient: PropTypes.func.isRequired
 };

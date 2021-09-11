@@ -20,6 +20,6 @@ function TabBurger({type, title}) {
 export default TabBurger;
 
 TabBurger.propTypes = {
-    type: PropTypes.string,
-    title: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
 };

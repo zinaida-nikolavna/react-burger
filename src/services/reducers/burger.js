@@ -91,7 +91,7 @@ export const burgerIngredientsReducer = createSlice({
         moveCard: (state, action) => {
             const dragCard = state.burgerIngredients[action.payload.dragIndex];
             state.burgerIngredients.splice(action.payload.dragIndex, 1);
-            state.burgerIngredients.splice(action.payload.hoverIndexIndex, 0, dragCard);
+            state.burgerIngredients.splice(action.payload.hoverIndex, 0, dragCard);
         }
     }
 });

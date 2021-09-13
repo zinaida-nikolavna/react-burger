@@ -28,8 +28,8 @@ function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}
 export default IngredientDetails;
 
 IngredientDetails.propTypes = {
-    image: PropTypes.string,
-    name: PropTypes.string,
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     calories: PropTypes.number,
     proteins: PropTypes.number,
     fat: PropTypes.number,

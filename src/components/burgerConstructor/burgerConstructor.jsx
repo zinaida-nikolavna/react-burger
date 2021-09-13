@@ -1,53 +1,57 @@
-import {useState, useContext, useReducer, useEffect} from 'react';
+import {useState, useEffect } from 'react';
 import burgerConstructorStyles from './burgerConstructor.module.css';
-import {ConstructorElement, DragIcon, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import {ConstructorElement, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal'; 
 import OrderDetails from '../orderDetails/orderDetails';
-import {IngredientsContext} from '../../utils/appContext.js';
-import {postData} from '../../utils/src.js';
+import { getNumberOrder } from '../../services/actions/burger';
+import { useSelector, useDispatch } from 'react-redux';
+import { useDrop } from "react-dnd";
+import { 
+  getburgerIngredients, 
+  increaseCounter, 
+  deleteBurgerIngredient, 
+  decreaseCounter,
+  decreasePrice } from '../../services/reducers/burger';
+import BurgerIngredient from '../burgerIngredient/burgerIngredient';  
 
-const pricenitialState = { price: 0 }; 
-
-// функция для расчета цены заказа
-function reducer(state, action) {
-  switch (action.type) {
-    case "add":
-      return { price: state.price + action.payload };
-    case "delete":
-      return {price: state.price - action.payload};
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-}
 
 function BurgerConstructor() {
     // стейт для открытия модального окна
     const [isOpenModal, setModal] = useState(false);
-    // стейт для расчета окончательной цены заказа
-    const [state, dispatch] = useReducer(reducer, pricenitialState);
-    // номер заказа для модального окна
-    const [orderData, setOrder] = useState({order: {number: null}});
-    // обработка ошибки
-    const [isError, setIsError] = useState(false);
-    // выбранные ингредиенты
-    const [ingredientsData, setIngredients] = useContext(IngredientsContext);
     // стейт для булочки
     const [bun, setBun] = useState(null);
     // стейт для проверки с булочкой заказ или нет
     const [isWithoutBun, setisWithoutBun] = useState(false);
+    // получаем итемы в конструкторе
+    const ingredientsData = useSelector(state => state.burger.burgerIngredients);
+
+    const dispatch = useDispatch();
+    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
+
+    // завершение перемещения по dnd
+    const [{ isHover }, dropRef] = useDrop({
+      accept: 'ingredient',
+      collect: monitor => ({
+        isHover: monitor.isOver(),
+      }),
+      drop(item) {
+        // меняем количество итемов в конструкторе
+        dispatch(getburgerIngredients(item.id));
+        // меняем счетчик
+        dispatch(increaseCounter(item.id));
+      },
+    });
+
+    const border = isHover ? '2px solid lightgreen' : '0px';
 
     useEffect(() => {
       const bunsIndex = []; // индекс булки в массиве ingredientsData
       const buns = []; // массив item булок
-      const ingredients = [] // массив прочих ингредиентов
       ingredientsData.forEach((item, index) => {
         // проходимся по массиву, если булка, то пушим в массивы для булки
         if (item.type === 'bun') {
           bunsIndex.push(index);
           buns.push(item);
-        } else {
-          // если не булка, то пушим в ингредиенты
-          ingredients.push(item);
         }
       });
 
@@ -56,57 +60,38 @@ function BurgerConstructor() {
          и не забываем удалить цену старой булки из суммы
       */
       if (buns.length > 1) {
-        ingredientsData.splice(bunsIndex[0], 1);
-        dispatch({type: 'delete', payload: buns[0].price * 2});
+        deleteIngredient(buns[0], bunsIndex[0], true);
         buns.splice(0, 1);
         bunsIndex.splice(0, 1);
-        setIngredients(ingredientsData);
       }
 
       setBun(buns[0]); // устанавливаем булку
 
-      /* рассчитываем цену булки
-         проверяем, что последним элементом в массив пришла именно булка
-         только после этого добавляем цену в сумму
-      */
-      if (buns.length && ingredientsData[ingredientsData.length - 1].type === 'bun') {
-        dispatch({type: 'add', payload: buns[0].price * 2});
-      }
-
-      /* рассчитываем цену ингредиентов
-         проверяем, что последним элементом в массив пришел именно ингредиент
-         только после этого добавляем цену в сумму
-      */
-      if (ingredients.length && ingredientsData[ingredientsData.length - 1].type !== 'bun') {
-        dispatch({type: 'add', payload: ingredients[ingredients.length - 1].price});
-      }
-
    }, [ingredientsData]);
 
     // Запрос на сервер для получения номера заказа
-    const getOrder = async() => {
+    const getOrder = () => {
       // если булочки нет, то запрос на сервер не отправляется
       if (bun) {
-        try {
           const ingredients = ingredientsData.map((item) => {
             return item._id
-          })
-          const res = await postData(ingredients);
-          const data = await res;
-          setOrder(data);
-          setisWithoutBun(false);
-        }
-        catch {
-          setIsError(true);
-        }
+          });
+          dispatch(getNumberOrder(ingredients));
       } else {
         setisWithoutBun(true);
       }
       setModal(true);  
     } 
 
+    // удаление ингредиента
+    const deleteIngredient = (item, index, isBun = false) => {
+      dispatch(deleteBurgerIngredient(index));
+      dispatch(decreaseCounter(item._id));
+      dispatch(decreasePrice(isBun ? item.price * 2 : item.price));
+    };
+
     return (
-        <section className={`${burgerConstructorStyles.list} mt-25`}>
+        <section  ref={dropRef} style={{border}} className={`${burgerConstructorStyles.list} mt-25`}>
           <div className={burgerConstructorStyles.wrapper}>
             <div className={`${burgerConstructorStyles.flexEnd}`}>
                 {bun && <ConstructorElement 
@@ -115,20 +100,11 @@ function BurgerConstructor() {
                     text={`${bun.name} (верх)`}
                     price={bun.price}
                     thumbnail={bun.image} />}
-            </div>    
+            </div>  
             <div className={`${burgerConstructorStyles.container} mt-2 mb-2`}>
-                {ingredientsData.map((item) => (
-                    <div key={item._id} className={burgerConstructorStyles.listItem}>
-                        {item.type !== 'bun' && <DragIcon type="primary" />}
-                        {item.type !== 'bun' && 
-                        <ConstructorElement
-                            type={undefined}
-                            isLocked={false}
-                            text={item.name}
-                            price={item.price}
-                            thumbnail={item.image}/>}
-                    </div>                                 
-                ))}
+            {ingredientsData.map((item, index) => (
+              <BurgerIngredient key={item.key} id={item.key} ingredient={item} index={index} deleteIngredient={deleteIngredient} />
+            ))}
             </div>
             <div className={`${burgerConstructorStyles.flexEnd}`}>
                 {bun && <ConstructorElement 
@@ -141,7 +117,7 @@ function BurgerConstructor() {
             </div>
             <div className={`${burgerConstructorStyles.flex} ${burgerConstructorStyles.order} mt-10 mb-13`}>
                 <div className={`${burgerConstructorStyles.flex} ${burgerConstructorStyles.alignCenter} mr-10`}>
-                    <p className="text text_type_digits-medium mr-2">{state.price}</p>
+                    <p className="text text_type_digits-medium mr-2">{price}</p>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button type="primary" size="large" onClick={() => getOrder()}>
@@ -150,8 +126,9 @@ function BurgerConstructor() {
             </div>
             <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
                 <OrderDetails 
-                    orderNumber={orderData.order.number} 
-                    isError={isError}
+                    orderNumber={orderNumber} 
+                    isError={orderNumberFailed}
+                    isLoading={orderNumberRequest}
                     isWithoutBun={isWithoutBun}/>
             </Modal>
         </section>

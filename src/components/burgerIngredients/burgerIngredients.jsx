@@ -1,46 +1,69 @@
-import {useState, useContext} from 'react';
 import burgerIngredientsStyles from './burgerIngredients.module.css';
 import Modal from '../modal/modal';
 import TabBurger from '../tabBurger/tabBurger';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import {IngredientsContext} from '../../utils/appContext.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeIngredient } from '../../services/reducers/burger';
+import {useEffect, useRef} from 'react';
 
 function BurgerIngredients() {
-    const burgerIngredientsHeight = window.innerHeight - 250;
-    const [isOpenModal, setModal] = useState(false); 
-    const [ingredients, setItem] = useState(null);
-    const [ingredientsData, setIngredients] = useContext(IngredientsContext);
+    const dispatch = useDispatch();
 
-    const OpenModal = (item) => {
-        setIngredients([...ingredientsData, item]); // добавляем в контекст новый ингредиент из конструктора
-        setModal(true);
-        setItem(item); // сетим ингредиент для дальнейшего использования в верстке
-    }
+    // получаем данные о том, какой ингредиент показывать в модальном окне
+    const ingredient = useSelector(state => state.burger.showedIngredient);
+
+    const tabsRef = useRef();
+    const navRef = useRef();
+
+    useEffect(() => {
+        // рассчитываем выделение вкладки при скролле
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if(entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navRef.current.querySelectorAll('li').forEach((el) => {
+                        if (el.id === id) {
+                            el.classList.add(`${burgerIngredientsStyles.activeTab}`);
+                        } else {
+                            el.classList.remove(`${burgerIngredientsStyles.activeTab}`);
+                        }
+                    });
+                }
+            })
+        }, {
+            root: tabsRef.current,
+            rootMargin: '0px 0px -80% 0px',
+            threshold: 0.5
+        })
+        tabsRef.current.querySelectorAll("h2").forEach(
+            (section) => observer.observe(section)
+        );
+    }, []);
 
     return (
         <section>
-            {isOpenModal && ingredients && 
-            <Modal title='Детали ингредиента' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
+            {ingredient && 
+            <Modal title='Детали ингредиента' isOpened={!!ingredient} onModalClose={() => dispatch(closeIngredient())}>
                     <IngredientDetails 
-                        image={ingredients.image}
-                        name={ingredients.name}
-                        calories={ingredients.calories}
-                        proteins={ingredients.proteins}
-                        fat={ingredients.fat}
-                        carbohydrates={ingredients.carbohydrates} />
+                        image={ingredient.image}
+                        name={ingredient.name}
+                        calories={ingredient.calories}
+                        proteins={ingredient.proteins}
+                        fat={ingredient.fat}
+                        carbohydrates={ingredient.carbohydrates} />
             </Modal>}
             <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
-            <nav className='mb-10'>
+            <nav ref={navRef}>
                 <ul className={burgerIngredientsStyles.tabs}>
-                    <li className={`${burgerIngredientsStyles.tab} ${burgerIngredientsStyles.activeTab}`}>Булки</li>
-                    <li className={burgerIngredientsStyles.tab}>Соусы</li>
-                    <li className={burgerIngredientsStyles.tab}>Начинки</li>
+                    <li className={`${burgerIngredientsStyles.tab}`} id='bun'>Булки</li>
+                    <li className={burgerIngredientsStyles.tab} id='sauce'>Соусы</li>
+                    <li className={burgerIngredientsStyles.tab} id='main'>Начинки</li>
                 </ul>
             </nav>
-            <div style={{ height: burgerIngredientsHeight, overflow: 'scroll', 'overflowX': 'hidden' }}>
-                <TabBurger title='Булки' type='bun' openIngredientsModal={OpenModal}/>
-                <TabBurger title='Соусы' type='sauce' openIngredientsModal={OpenModal}/>
-                <TabBurger title='Начинки' type='main' openIngredientsModal={OpenModal}/>
+            <div ref={tabsRef} className="pt-10" style={{ height: '610px', overflow: 'scroll', 'overflowX': 'hidden' }}>
+                <TabBurger title='Булки' type='bun' />
+                <TabBurger className="tab" title='Соусы' type='sauce' />
+                <TabBurger className="tab" title='Начинки' type='main' />
             </div>
         </section>
     );

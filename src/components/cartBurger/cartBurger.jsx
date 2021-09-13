@@ -1,27 +1,29 @@
-import {useState} from 'react';
 import cartBurgerStyles from './cartBurger.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 import {dataPropTypes} from '../../utils/PropTypes';
+import { useSelector, useDispatch } from 'react-redux';
+import { showIngredient } from '../../services/reducers/burger';
+import { useDrag } from "react-dnd";
 
-function CartBurger({data, openIngredientsModal}) {
-    const [counter, setCounter] = useState(0); // стейт для счетчика
-
-    /* т.к при открытии модального окна ингредиент сразу добавляется в конструктор,
-       то тут же посчитаем при клике счетчик
-    */
-    const openIngredient = (data) => {
-        setCounter(counter + 1);
-        openIngredientsModal(data);
-    };
+function CartBurger({data}) {
+    const counter = useSelector(state => state.burger.counter);
+    const dispatch = useDispatch();
+    const id = data ? data._id : null;
+    const [{isDragging}, dragRef] = useDrag({
+        type: 'ingredient',
+        item: {id},
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging()
+        })
+    });
 
     if (!data) {
         return null;
     } else {
         return (
             <>
-                <div className={`${cartBurgerStyles.cart} mb-8`} onClick={() => {openIngredient(data)}}>
-                    {!!counter && <Counter count={counter} size='default' />}
+                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => dispatch(showIngredient(data))}>
+                    {!!counter[id] && <Counter count={counter[id]} size='default' />}
                     <img src={data.image} alt='изображение ингредиента'/>
                     <div className={`${cartBurgerStyles.price} mt-1 mb-1`}>
                         <p className='text text_type_digits-default mr-2'>{data.price}</p>
@@ -37,6 +39,5 @@ function CartBurger({data, openIngredientsModal}) {
 export default CartBurger;
 
 CartBurger.propTypes = {
-    data: dataPropTypes,
-    openIngredientsModal: PropTypes.func
+    data: dataPropTypes
 };

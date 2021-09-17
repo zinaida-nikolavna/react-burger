@@ -9,9 +9,10 @@ function CartBurger({data}) {
     const counter = useSelector(state => state.burger.counter);
     const dispatch = useDispatch();
     const id = data ? data._id : null;
+    const type = data ? data.type : null;
     const [{isDragging}, dragRef] = useDrag({
         type: 'ingredient',
-        item: {id},
+        item: {id, type},
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })

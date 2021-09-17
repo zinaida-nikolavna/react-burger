@@ -38,7 +38,7 @@ function BurgerConstructor() {
         // меняем количество итемов в конструкторе
         dispatch(getburgerIngredients(item.id));
         // меняем счетчик
-        dispatch(increaseCounter(item.id));
+        dispatch(increaseCounter({id: item.id, type: item.type}));
       },
     });
 
@@ -85,8 +85,9 @@ function BurgerConstructor() {
 
     // удаление ингредиента
     const deleteIngredient = (item, index, isBun = false) => {
+
       dispatch(deleteBurgerIngredient(index));
-      dispatch(decreaseCounter(item._id));
+      dispatch(decreaseCounter({id: item._id, type: item.type}));
       dispatch(decreasePrice(isBun ? item.price * 2 : item.price));
     };
 

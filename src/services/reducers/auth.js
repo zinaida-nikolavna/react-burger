@@ -7,6 +7,9 @@ const authReducer = createSlice({
         nameUser: '',
         registerRequest: false,
         registerFailed: false,
+        checkEmailExistRequest: false,
+        checkEmailExistFailed: false,
+        isEmailExist: false
     },
     reducers: {
         registerRequest: (state) => {
@@ -22,13 +25,28 @@ const authReducer = createSlice({
             state.registerFailed = true;
             state.registerRequest = false;
         },
+        checkEmailRequest: (state) => {
+            state.checkEmailExistRequest = true;
+        },
+        checkEmailSuccess: (state) => {
+            state.checkEmailExistFailed = false;
+            state.isEmailExist = true;
+            state.checkEmailExistRequest = false;
+        },
+        checkEmailFailed: (state) => {
+            state.checkEmailExistFailed = true;
+            state.checkEmailExistRequest = false;
+        },
     }
 });
 
 export const {
     registerRequest,
     registerSuccess,
-    registerFailed
+    registerFailed,
+    checkEmailRequest,
+    checkEmailSuccess,
+    checkEmailFailed
 } = authReducer.actions;
 
 export default authReducer.reducer;

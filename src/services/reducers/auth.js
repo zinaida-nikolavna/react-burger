@@ -5,11 +5,16 @@ const authReducer = createSlice({
     initialState: {
         emailUser: '',
         nameUser: '',
+        passwordUser: '',
+        token: '',
         registerRequest: false,
         registerFailed: false,
         checkEmailExistRequest: false,
         checkEmailExistFailed: false,
-        isEmailExist: false
+        isEmailExist: false,
+        resetPasswordRequest: false,
+        resetPasswordFailed: false,
+        resetPasswordSuccess: false
     },
     reducers: {
         registerRequest: (state) => {
@@ -17,8 +22,10 @@ const authReducer = createSlice({
         },
         registerSuccess: (state, action) => {
             state.registerFailed = false;
-            state.emailUser = action.payload.user.email;
-            state.nameUser = action.payload.user.name;
+            state.emailUser = action.payload.email;
+            state.nameUser = action.payload.name;
+            state.passwordUser = action.payload.password;
+            state.token = action.payload.token;
             state.registerRequest = false;
         },
         registerFailed: (state) => {
@@ -37,6 +44,19 @@ const authReducer = createSlice({
             state.checkEmailExistFailed = true;
             state.checkEmailExistRequest = false;
         },
+        resetPasswordRequest: (state) => {
+            state.resetPasswordRequest = true;
+        },
+        resetPasswordSuccess: (state, action) => {
+            state.resetPasswordFailed = false;
+            state.passwordUser = action.payload;
+            state.resetPasswordRequest = false;
+            state.resetPasswordSuccess = true;
+        },
+        resetPasswordFailed: (state) => {
+            state.resetPasswordFailed = true;
+            state.resetPasswordRequest = false;
+        },
     }
 });
 
@@ -46,7 +66,10 @@ export const {
     registerFailed,
     checkEmailRequest,
     checkEmailSuccess,
-    checkEmailFailed
+    checkEmailFailed,
+    resetPasswordRequest,
+    resetPasswordSuccess,
+    resetPasswordFailed
 } = authReducer.actions;
 
 export default authReducer.reducer;

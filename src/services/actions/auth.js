@@ -1,4 +1,4 @@
-import {registerUser, emailExist, resetPassword} from '../../utils/src.js';
+import {registerUser, emailExist, resetPassword, authorization} from '../../utils/src.js';
 import {setCookie} from '../../utils/utils.js';
 import {
     registerRequest,
@@ -9,7 +9,9 @@ import {
     checkEmailFailed,
     resetPasswordRequest,
     resetPasswordSuccess,
-    resetPasswordFailed
+    resetPasswordFailed,
+    authSuccess,
+    authFailed
 } from '../reducers/auth';
 
 // регистрируем нового пользователя
@@ -58,5 +60,21 @@ export const resetOldPassword = (form) => (dispatch) => {
             })
             .catch(() => {
                 dispatch(resetPasswordFailed());
+            })
+};
+
+// авторизация
+export const authUser = (form) => (dispatch) => {
+    return authorization(form)
+           .then(res => {
+                if (res && res.success) {
+                    setCookie('token', res.refreshToken);
+                    dispatch(authSuccess({email: res.user.email, name: res.user.name, password: form.password, token: res.accessToken.split('Bearer ')[1]}));
+                } else {
+                    dispatch(authFailed());
+              }
+            })
+            .catch(() => {
+                dispatch(authFailed());
             })
 };

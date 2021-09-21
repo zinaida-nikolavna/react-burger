@@ -14,7 +14,9 @@ const authReducer = createSlice({
         isEmailExist: false,
         resetPasswordRequest: false,
         resetPasswordFailed: false,
-        resetPasswordSuccess: false
+        resetPasswordSuccess: false,
+        authSuccess: false,
+        authFailed: false
     },
     reducers: {
         registerRequest: (state) => {
@@ -57,6 +59,17 @@ const authReducer = createSlice({
             state.resetPasswordFailed = true;
             state.resetPasswordRequest = false;
         },
+        authSuccess: (state, action) => {
+            state.authFailed = false;
+            state.emailUser = action.payload.email;
+            state.nameUser = action.payload.name;
+            state.passwordUser = action.payload.password;
+            state.token = action.payload.token;
+            state.authSuccess = true;
+        },
+        authFailed: (state) => {
+            state.authFailed = true;
+        }
     }
 });
 
@@ -69,7 +82,9 @@ export const {
     checkEmailFailed,
     resetPasswordRequest,
     resetPasswordSuccess,
-    resetPasswordFailed
+    resetPasswordFailed,
+    authSuccess,
+    authFailed
 } = authReducer.actions;
 
 export default authReducer.reducer;

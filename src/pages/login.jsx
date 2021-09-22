@@ -14,7 +14,7 @@ function LoginPage() {
     };
     const dispatch = useDispatch();
 
-    const {authSuccess} = useSelector(state => state.auth);
+    const {isLogged} = useSelector(state => state.auth);
 
     const login = useCallback(
         e => {
@@ -25,7 +25,7 @@ function LoginPage() {
     );
 
     // при успешной авторизации редиректим на главную страницу
-    if (authSuccess) {
+    if (isLogged) {
         return (
           <Redirect
             to={{

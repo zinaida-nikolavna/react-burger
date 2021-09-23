@@ -81,6 +81,9 @@ const authReducer = createSlice({
             //state.nameUser = '';
             //state.passwordUser = '';
             state.isLogged = false;
+        },
+        userInfoFailed: (state) => {
+            state.isLogged = false;
         }
     }
 });
@@ -98,7 +101,8 @@ export const {
     authSuccess,
     authFailed,
     userInfoSuccess,
-    logoutSuccess
+    logoutSuccess,
+    userInfoFailed
 } = authReducer.actions;
 
 export default authReducer.reducer;

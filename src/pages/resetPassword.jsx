@@ -5,6 +5,7 @@ import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetOldPassword } from '../services/actions/auth';
+import { getCookie } from '../utils/utils.js';
 
 // страница логина
 function ResetPasswordPage() {
@@ -13,7 +14,7 @@ function ResetPasswordPage() {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const {resetPasswordSuccess, resetPasswordFailed} = useSelector(state => state.auth);
+    const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector(state => state.auth);
 
     const changePassword = useCallback(
         e => {
@@ -33,6 +34,29 @@ function ResetPasswordPage() {
           />
         );
     }
+
+    // если пользователь авторизован он не может перейти на страницу изменения пароля
+    if (isLogged || getCookie('refreshToken')) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/'
+            }}
+          />
+        );
+    }
+
+    // если пользователь попал не со страницы восстановления пароля, то редиректим его
+    if (!isEmailExist) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/login'
+            }}
+          />
+        );
+    }
+
     return (
         <>
         <AppHeader />

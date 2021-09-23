@@ -5,12 +5,13 @@ import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkEmailExist } from '../services/actions/auth';
+import { getCookie } from '../utils/utils.js';
 
 // страница логина
 function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
     const dispatch = useDispatch();
-    const {checkEmailExistRequest, checkEmailExistFailed, isEmailExist} = useSelector(state => state.auth);
+    const {checkEmailExistRequest, checkEmailExistFailed, isEmailExist, isLogged} = useSelector(state => state.auth);
 
     const onChangeEmail = e => {
         setEmail(e.target.value)
@@ -24,12 +25,23 @@ function ForgotPasswordPage() {
         [dispatch, email]
     );
 
-    // при успешной регистрации редиректим на главную страницу
+    // при успешной регистрации редиректим на страницу сброса пароля
     if (isEmailExist) {
         return (
           <Redirect
             to={{
               pathname: '/reset-password'
+            }}
+          />
+        );
+    }
+
+    // если пользователь авторизован он не может перейти на страницу изменения пароля
+    if (isLogged || getCookie('refreshToken')) {
+        return (
+          <Redirect
+            to={{
+              pathname: '/'
             }}
           />
         );

@@ -5,6 +5,7 @@ import RegisterPage from '../../pages/register';
 import ResetPasswordPage from '../../pages/resetPassword';
 import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
+import { ProtectedRoute } from '../protected-route';
 
 function App() {
     return (
@@ -25,9 +26,9 @@ function App() {
           <Route path="/reset-password">
             <ResetPasswordPage />
           </Route>
-          <Route path="/profile">
+          <ProtectedRoute path="/profile">
             <ProfilePage />
-          </Route>
+          </ProtectedRoute>
         </Switch>
       </Router>
     );

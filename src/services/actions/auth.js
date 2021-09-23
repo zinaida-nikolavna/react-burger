@@ -6,7 +6,7 @@ import {registerUser,
         getNewToken,
         refreshUser,
         logoutRequest} from '../../utils/src.js';
-import {setCookie, deleteCookie} from '../../utils/utils.js';
+import {setCookie, deleteCookie, getCookie} from '../../utils/utils.js';
 import {
     registerRequest,
     registerSuccess,
@@ -20,7 +20,8 @@ import {
     authSuccess,
     authFailed,
     userInfoSuccess,
-    logoutSuccess
+    logoutSuccess,
+    userInfoFailed
 } from '../reducers/auth';
 
 // регистрируем нового пользователя
@@ -92,20 +93,24 @@ export const authUser = (form) => (dispatch) => {
 
 // запрос данных о пользователе
 export const getUserInfo = () => (dispatch) => {
-    return getUserRequest()
-           .then(res => {
-                if (res && res.success) {
-                    dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
-                } 
-            })
-            .catch(() => {
-                getNewToken()
-                .then(res => {
-                    setCookie('token', res.accessToken.split('Bearer ')[1]);
-                    setCookie('refreshToken', res.refreshToken);
-                    getUserRequest();
+    if (getCookie('refreshToken')){
+        return getUserRequest()
+            .then(res => {
+                    if (res && res.success) {
+                        dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
+                    } 
                 })
+                .catch(() => {
+                    getNewToken()
+                    .then(res => {
+                        setCookie('token', res.accessToken.split('Bearer ')[1]);
+                        setCookie('refreshToken', res.refreshToken);
+                        getUserRequest();
+                    })
             })
+    } else {
+        dispatch(userInfoFailed());
+    }
 };
 
 // обновление пользователя
@@ -131,9 +136,9 @@ export const getLogoutRequest = () => (dispatch) => {
     return logoutRequest()
            .then(res => {
                 if (res && res.success) {
-                    dispatch(logoutSuccess());
                     deleteCookie('token');
                     deleteCookie('refreshToken');
+                    dispatch(logoutSuccess());
                 } 
             })
 };

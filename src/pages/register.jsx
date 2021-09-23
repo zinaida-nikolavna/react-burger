@@ -5,6 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import AppHeader from '../components/header/header';
 import { registerNewUser } from '../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
+import { getCookie } from '../utils/utils.js';
 
 // страница регистрации
 function RegisterPage() {
@@ -24,7 +25,7 @@ function RegisterPage() {
     );
 
     // при успешной регистрации редиректим на главную страницу
-    if (nameUser) {
+    if (nameUser || getCookie('refreshToken')) {
         return (
           <Redirect
             to={{

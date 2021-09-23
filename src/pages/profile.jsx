@@ -36,16 +36,12 @@ function ProfilePage() {
     );
 
     const logout = useCallback(
-        () => {
-            dispatch(getLogoutRequest());
+        async () => {
+            await dispatch(getLogoutRequest());
             setIsLogged(false);
         },
         [dispatch]
     );
-
-    /*const logout = () => {
-        dispatch(getLogoutRequest());
-    }*/
 
     if (!isLogged) {
         return (

@@ -5,6 +5,7 @@ import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { authUser } from '../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
+import { getCookie } from '../utils/utils.js';
 
 // страница логина
 function LoginPage() {
@@ -14,7 +15,7 @@ function LoginPage() {
     };
     const dispatch = useDispatch();
 
-    const {isLogged} = useSelector(state => state.auth);
+    const isLogged = useSelector(state => state.auth.isLogged);
 
     const login = useCallback(
         e => {
@@ -25,7 +26,7 @@ function LoginPage() {
     );
 
     // при успешной авторизации редиректим на главную страницу
-    if (isLogged) {
+    if (isLogged || getCookie('refreshToken')) {
         return (
           <Redirect
             to={{

@@ -120,13 +120,12 @@ export  const getUserRequest = async() => {
 
 // обновление токена
 export  const getNewToken = async() => {
-  const refreshToken = getCookie('refreshToken');
   const res = await fetch(REFRESH_TOKEN, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: refreshToken})
+      body: JSON.stringify({token: getCookie('refreshToken')})
     });
   if (res.ok) {
       return res.json();
@@ -154,13 +153,12 @@ export  const refreshUser = async(form) => {
 
 // выход из системы
 export  const logoutRequest = async() => {
-  const refreshToken = getCookie('refreshToken');
   const res = await fetch(LOGOUT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({token: refreshToken})
+      body: JSON.stringify({token: getCookie('refreshToken')})
     });
   if (res.ok) {
       return res.json();

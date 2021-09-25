@@ -18,12 +18,17 @@ function CartBurger({data}) {
         })
     });
 
+    const openedIngredient = () => {
+        dispatch(showIngredient(data));
+        window.history.pushState({}, null, `http://localhost:3000/ingredients/${id}`);
+    }
+
     if (!data) {
         return null;
     } else {
         return (
             <>
-                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => dispatch(showIngredient(data))}>
+                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => openedIngredient()}>
                     {!!counter[id] && <Counter count={counter[id]} size='default' />}
                     <img src={data.image} alt='изображение ингредиента'/>
                     <div className={`${cartBurgerStyles.price} mt-1 mb-1`}>

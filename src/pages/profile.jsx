@@ -26,7 +26,7 @@ function ProfilePage() {
     }, []);
 
     useEffect(()=> {
-        setValue({ email: emailUser, name: nameUser });
+        setValue({ email: emailUser, password: '', name: nameUser });
     }, [emailUser, nameUser]);
 
     const save = useCallback(

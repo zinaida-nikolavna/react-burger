@@ -5,8 +5,6 @@ const authReducer = createSlice({
     initialState: {
         emailUser: '',
         nameUser: '',
-        passwordUser: '',
-        token: '',
         registerRequest: false,
         registerFailed: false,
         checkEmailExistRequest: false,
@@ -27,7 +25,6 @@ const authReducer = createSlice({
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
             state.passwordUser = action.payload.password;
-            state.token = action.payload.token;
             state.registerRequest = false;
             state.isLogged = true;
         },
@@ -50,9 +47,8 @@ const authReducer = createSlice({
         resetPasswordRequest: (state) => {
             state.resetPasswordRequest = true;
         },
-        resetPasswordSuccess: (state, action) => {
+        resetPasswordSuccess: (state) => {
             state.resetPasswordFailed = false;
-            state.passwordUser = action.payload;
             state.resetPasswordRequest = false;
             state.resetPasswordSuccess = true;
         },
@@ -64,8 +60,6 @@ const authReducer = createSlice({
             state.authFailed = false;
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
-            state.passwordUser = action.payload.password;
-            state.token = action.payload.token;
             state.isLogged = true;
         },
         authFailed: (state) => {
@@ -77,9 +71,6 @@ const authReducer = createSlice({
             state.isLogged = true;
         },
         logoutSuccess: (state) => {
-            //state.emailUser = '';
-            //state.nameUser = '';
-            //state.passwordUser = '';
             state.isLogged = false;
         },
         userInfoFailed: (state) => {

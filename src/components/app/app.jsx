@@ -8,6 +8,7 @@ import ProfilePage from '../../pages/profile';
 import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector } from 'react-redux';
+import { NotFound404 } from '../../pages/NotFound404'
 
 function App() {
   // проверяем открыто ли модальное окно с ингредиентом
@@ -38,6 +39,9 @@ function App() {
           <ProtectedRoute path="/profile">
             <ProfilePage />
           </ProtectedRoute>
+          <Route>
+            <NotFound404 />
+          </Route>
         </Switch>
       </Router>
     );

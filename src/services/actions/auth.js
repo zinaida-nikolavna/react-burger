@@ -64,7 +64,7 @@ export const resetOldPassword = (form) => (dispatch) => {
     return resetPassword(form)
            .then(res => {
                 if (res && res.success) {
-                    dispatch(resetPasswordSuccess(form.password));
+                    dispatch(resetPasswordSuccess());
                 } else {
                     dispatch(resetPasswordFailed());
               }
@@ -98,7 +98,7 @@ export const getUserInfo = () => (dispatch) => {
             .then(res => {
                     if (res && res.success) {
                         dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
-                    } 
+                    }  
                 })
                 .catch(() => {
                     getNewToken()
@@ -131,7 +131,7 @@ export const getRefreshUser = (form) => (dispatch) => {
             })
 };
 
-// обновление пользователя
+// разлогин
 export const getLogoutRequest = () => (dispatch) => {
     return logoutRequest()
            .then(res => {

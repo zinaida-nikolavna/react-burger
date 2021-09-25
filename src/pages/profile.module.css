@@ -1,6 +1,6 @@
 .container {
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     margin-top: 120px;
 }
@@ -28,4 +28,8 @@
     align-items: center;
     flex-direction: column;
     height: 100%;
+}
+
+.detail {
+    width: 350px;
 }

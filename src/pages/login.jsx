@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { authUser } from '../services/actions/auth';
@@ -14,6 +14,8 @@ function LoginPage() {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
+    const location = useLocation();
+    const {state} = location;
 
     const isLogged = useSelector(state => state.auth.isLogged);
 
@@ -29,9 +31,7 @@ function LoginPage() {
     if (isLogged || getCookie('refreshToken')) {
         return (
           <Redirect
-            to={{
-              pathname: '/'
-            }}
+          to={ state?.from || '/' }
           />
         );
     }

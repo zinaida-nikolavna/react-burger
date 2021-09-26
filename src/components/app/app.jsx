@@ -42,7 +42,7 @@ function App() {
           {!ingredient && <Route path='/ingredients/:id'>
             <IngredientDetails />
           </Route>}
-          <ProtectedRoute path="/profile">
+          <ProtectedRoute path={'/profile'}>
             <ProfilePage />
           </ProtectedRoute>
           <Route>

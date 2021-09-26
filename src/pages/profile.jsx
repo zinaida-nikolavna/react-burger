@@ -37,6 +37,14 @@ function ProfilePage() {
         [dispatch,form]
     );
 
+    const cancel = useCallback(
+        e => {
+          e.preventDefault();
+          setValue({ email: emailUser, password: '', name: nameUser });
+        },
+        [dispatch,form]
+    );
+
     // разлогин
     const logout = useCallback(
         async () => {
@@ -105,7 +113,10 @@ function ProfilePage() {
                                     onBlur={() => setActivePassword(true)} 
                                     onIconClick={() => setActivePassword(false)}/>
                                 </span>
-                                <Button type="primary" size="large" onClick={save}>Сохранить</Button>
+                                <div>
+                                    <span className='mr-4'><Button type="primary" size="large" onClick={save}>Сохранить</Button></span>
+                                    <Button type="primary" size="large" onClick={cancel}>Отмена</Button>
+                                </div>
                             </form>
                         </div>    
                     </Route>

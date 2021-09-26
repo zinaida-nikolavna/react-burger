@@ -1,4 +1,4 @@
-import {getCookie} from '../utils/utils.js';
+import {getCookie, deleteCookie} from '../utils/utils.js';
 
 const FETCH_URL = 'https://norma.nomoreparties.space/api/ingredients';
 const POST_ENDPOINT = 'https://norma.nomoreparties.space/api/orders';
@@ -114,7 +114,7 @@ export  const getUserRequest = async() => {
   if (res.ok) {
       return res.json();
   } else {
-      return Promise.reject(`Ошибка ${res.status}`);
+      return Promise.reject(res.status);
   }
 }
 
@@ -147,7 +147,7 @@ export  const refreshUser = async(form) => {
   if (res.ok) {
       return res.json();
   } else {
-      return Promise.reject(`Ошибка ${res.status}`);
+      return Promise.reject(res.status);
   }
 }
 

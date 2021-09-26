@@ -100,13 +100,17 @@ export const getUserInfo = () => (dispatch) => {
                         dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
                     }  
                 })
-                .catch(() => {
-                    getNewToken()
-                    .then(res => {
-                        setCookie('token', res.accessToken.split('Bearer ')[1]);
-                        setCookie('refreshToken', res.refreshToken);
-                        getUserRequest();
-                    })
+                .catch((err) => {
+                    if (err === 403) {
+                        getNewToken()
+                        .then(res => {
+                            deleteCookie('token');
+                            deleteCookie('refreshToken');
+                            setCookie('token', res.accessToken.split('Bearer ')[1]);
+                            setCookie('refreshToken', res.refreshToken);
+                            getUserRequest();
+                        })
+                    }
             })
     } else {
         dispatch(userInfoFailed());
@@ -119,15 +123,19 @@ export const getRefreshUser = (form) => (dispatch) => {
            .then(res => {
                 if (res && res.success) {
                     dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
-                } 
+                }
             })
-            .catch(() => {
-                getNewToken()
-                .then(res => {
-                    setCookie('token', res.accessToken.split('Bearer ')[1]);
-                    setCookie('refreshToken', res.refreshToken);
-                    refreshUser();
-                })
+            .catch((err) => {
+                if (err === 403) {
+                    getNewToken()
+                    .then(res => {
+                        deleteCookie('token');
+                        deleteCookie('refreshToken');
+                        setCookie('token', res.accessToken.split('Bearer ')[1]);
+                        setCookie('refreshToken', res.refreshToken);
+                        refreshUser(form);
+                    })
+                }
             })
 };
 

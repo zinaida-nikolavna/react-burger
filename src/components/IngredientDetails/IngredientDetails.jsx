@@ -1,8 +1,7 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getBurgerIngredients } from '../../services/actions/burger';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 const Items = ({title, characteristic}) => {
@@ -16,31 +15,34 @@ const Items = ({title, characteristic}) => {
 
 function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}) {
     const [ingredient, setIngredient] = useState(null);
-    const dispatch = useDispatch();
-    const burgerData = useSelector(state => state.burger.items);
+    const { itemsFailed, itemsRequest, items } = useSelector(state => state.burger);
     const { id } = useParams();
     
     useEffect(
         () => {
-            if (!image || !name) {
-                dispatch(getBurgerIngredients());
-            }  
-        },
-        []
-    );
-
-    useEffect(
-        () => {
-            const matchIngredient = burgerData.find(item => item._id === id);
+            const matchIngredient = items.find(item => item._id === id);
             setIngredient(matchIngredient);
         },
-        [burgerData]
+        [items]
     );
 
-    if ((!ingredient || !burgerData.length) && !image ) {
+    if ((!ingredient || !items.length) && !image ) {
         return null;
     }
 
+    if (itemsFailed) {
+        return (
+          <div className={IngredientDetailsStyles.page}>
+            Что-то пошло не так... Перезагрузите страницу
+          </div>
+        )
+    } else if (itemsRequest) {
+        return (
+          <div className={IngredientDetailsStyles.page}>
+            Загрузка...
+          </div> 
+        )
+    } else {
     return (
         <div className={ingredient ? `${IngredientDetailsStyles.page}` : 'ml-25 mr-25'}>
             {ingredient && <h3 className='text text_type_main-large'>Детали ингредиента</h3>}
@@ -53,7 +55,8 @@ function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}
                 <Items title='Углеводы, г' characteristic={carbohydrates || ingredient.carbohydrates} />
             </div>
         </div>
-    )
+        )
+    }
 }
 
 export default IngredientDetails;

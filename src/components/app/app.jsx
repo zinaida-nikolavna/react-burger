@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoginPage from '../../pages/login';
 import MainPage from '../../pages/mainPage';
@@ -7,13 +8,18 @@ import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
 import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import { useSelector } from 'react-redux';
-import { NotFound404 } from '../../pages/NotFound404'
+import { useSelector, useDispatch } from 'react-redux';
+import { NotFound404 } from '../../pages/NotFound404';
+import { getBurgerIngredients } from '../../services/actions/burger';
 
 function App() {
   // проверяем открыто ли модальное окно с ингредиентом
   // если да, то не должен происходить переход по маршруту
   const ingredient = useSelector(state => state.burger.showedIngredient);
+  const dispatch = useDispatch();
+  useEffect(()=> {
+    dispatch(getBurgerIngredients())
+  }, [dispatch]);
 
     return (
       <Router>

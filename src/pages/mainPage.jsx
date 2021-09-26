@@ -3,23 +3,17 @@ import AppHeader from '../components/header/header';
 import BurgerIngredients from '../components/burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../components/burgerConstructor/burgerConstructor';
 import style from './mainPage.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { getBurgerIngredients } from '../services/actions/burger';
+import { useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 function MainPage() {
   const { itemsFailed, itemsRequest, items } = useSelector(state => state.burger);
-  const dispatch = useDispatch();
 
   const styles = {
     height: window.innerHeight,
     overflow: 'hidden'
   };
-
-  useEffect(()=> {
-    dispatch(getBurgerIngredients())
-}, [dispatch])
 
   if (itemsFailed) {
     return (

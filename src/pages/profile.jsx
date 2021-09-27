@@ -12,7 +12,7 @@ import { getCookie } from '../utils/utils.js';
 // страница личного кабинета
 function ProfilePage() {
     const dispatch = useDispatch();
-    const {emailUser, nameUser} = useSelector(state => state.auth);
+    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector(state => state.auth);
     const [activeName, setActiveName] = useState(true);
     const [isLogged, setIsLogged] = useState(true);
     const [activePassword, setActivePassword] = useState(true);
@@ -65,6 +65,14 @@ function ProfilePage() {
         );
     }
 
+    if (logoutRequestFailed) {
+        return (
+            <div className={`${styleProfile.navItem} text text_type_main-medium`}>
+                Что-то пошло не так... перезагрузите страницу и заново нажмите "Выход" для выхода
+            </div>
+        );
+    }
+
     return (
         <>
             <AppHeader />
@@ -80,7 +88,7 @@ function ProfilePage() {
                 <div className={styleProfile.detail}>
                 <Switch>
                     <Route path='/profile' exact={true}>
-                        <div className={styleProfile.form}>   
+                        {!refreshUserFailed && <div className={styleProfile.form}>   
                             <form className={style.form}>
                                 <span className='mb-6'>
                                     <Input
@@ -118,7 +126,13 @@ function ProfilePage() {
                                     <Button type="primary" size="large" onClick={cancel}>Отмена</Button>
                                 </div>
                             </form>
-                        </div>    
+                        </div>}
+                        {refreshUserFailed && 
+                        <>
+                            <div className='text text_type_main-medium'>Обновление пользовательских данных не удалось</div>
+                            <div className='text text_type_main-medium'>Обновите страницу</div>
+                        </>
+                        }    
                     </Route>
                     <Route path='/profile/orders' exact={true}>
                         <div className='text text_type_main-medium text_color_inactive'>Здесь будет история заказов</div>

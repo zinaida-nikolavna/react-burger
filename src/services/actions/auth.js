@@ -21,7 +21,9 @@ import {
     authFailed,
     userInfoSuccess,
     logoutSuccess,
-    userInfoFailed
+    userInfoFailed,
+    refreshUserFailed,
+    logoutRequestFailed
 } from '../reducers/auth';
 
 // регистрируем нового пользователя
@@ -93,7 +95,6 @@ export const authUser = (form) => (dispatch) => {
 
 // запрос данных о пользователе
 export const getUserInfo = () => (dispatch) => {
-    if (getCookie('refreshToken')){
         return getUserRequest()
             .then(res => {
                     if (res && res.success) {
@@ -110,33 +111,40 @@ export const getUserInfo = () => (dispatch) => {
                             setCookie('refreshToken', res.refreshToken);
                             getUserRequest();
                         })
+                        .catch(() => {
+                            dispatch(userInfoFailed());
+                        });
+                    } else {
+                        dispatch(userInfoFailed());
                     }
             })
-    } else {
-        dispatch(userInfoFailed());
-    }
 };
 
 // обновление пользователя
 export const getRefreshUser = (form) => (dispatch) => {
     return refreshUser(form)
-           .then(res => {
-                if (res && res.success) {
-                    dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
-                }
-            })
-            .catch((err) => {
-                if (err === 403) {
-                    getNewToken()
-                    .then(res => {
-                        deleteCookie('token');
-                        deleteCookie('refreshToken');
-                        setCookie('token', res.accessToken.split('Bearer ')[1]);
-                        setCookie('refreshToken', res.refreshToken);
-                        refreshUser(form);
-                    })
-                }
-            })
+        .then(res => {
+            if (res && res.success) {
+                dispatch(userInfoSuccess({email: res.user.email, name: res.user.name}));
+            }
+        })
+        .catch((err) => {
+            if (err === 403) {
+                getNewToken()
+                .then(res => {
+                    deleteCookie('token');
+                    deleteCookie('refreshToken');
+                    setCookie('token', res.accessToken.split('Bearer ')[1]);
+                    setCookie('refreshToken', res.refreshToken);
+                    refreshUser(form);
+                })
+                .catch(() => {
+                    dispatch(userInfoFailed());
+                });
+            } else {
+                dispatch(refreshUserFailed());
+            }
+        })
 };
 
 // разлогин
@@ -149,4 +157,7 @@ export const getLogoutRequest = () => (dispatch) => {
                     dispatch(logoutSuccess());
                 } 
             })
+            .catch(() => {
+                dispatch(logoutRequestFailed());
+            });
 };

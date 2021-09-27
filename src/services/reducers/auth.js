@@ -14,7 +14,9 @@ const authReducer = createSlice({
         resetPasswordFailed: false,
         resetPasswordSuccess: false,
         authFailed: false,
-        isLogged: false
+        isLogged: false,
+        refreshUserRequestFailed: false,
+        logoutRequestFailed: false
     },
     reducers: {
         registerRequest: (state) => {
@@ -69,12 +71,20 @@ const authReducer = createSlice({
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
             state.isLogged = true;
+            state.refreshUserRequestFailed = false;
         },
         logoutSuccess: (state) => {
             state.isLogged = false;
+            state.logoutRequestFailed = false;
+        },
+        logoutRequestFailed: (state) => {
+            state.logoutRequestFailed = true;
         },
         userInfoFailed: (state) => {
             state.isLogged = false;
+        },
+        refreshUserFailed: (state) => {
+            state.refreshUserRequestFailed = true;
         }
     }
 });
@@ -93,7 +103,9 @@ export const {
     authFailed,
     userInfoSuccess,
     logoutSuccess,
-    userInfoFailed
+    userInfoFailed,
+    refreshUserFailed,
+    logoutRequestFailed
 } = authReducer.actions;
 
 export default authReducer.reducer;

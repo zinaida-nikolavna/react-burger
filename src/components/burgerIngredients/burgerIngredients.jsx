@@ -40,10 +40,15 @@ function BurgerIngredients() {
         );
     }, []);
 
+    const onModalClose = () => {
+        dispatch(closeIngredient());
+        window.history.pushState({}, null, `http://localhost:3000`);
+    }
+
     return (
         <section>
             {ingredient && 
-            <Modal title='Детали ингредиента' isOpened={!!ingredient} onModalClose={() => dispatch(closeIngredient())}>
+            <Modal title='Детали ингредиента' isOpened={!!ingredient} onModalClose={() => onModalClose()}>
                     <IngredientDetails 
                         image={ingredient.image}
                         name={ingredient.name}

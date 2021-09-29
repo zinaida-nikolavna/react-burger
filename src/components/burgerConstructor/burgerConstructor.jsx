@@ -12,7 +12,9 @@ import {
   deleteBurgerIngredient, 
   decreaseCounter,
   decreasePrice } from '../../services/reducers/burger';
-import BurgerIngredient from '../burgerIngredient/burgerIngredient';  
+import BurgerIngredient from '../burgerIngredient/burgerIngredient';
+import { getCookie } from '../../utils/utils.js';  
+import { useHistory } from "react-router-dom";
 
 
 function BurgerConstructor() {
@@ -27,7 +29,7 @@ function BurgerConstructor() {
 
     const dispatch = useDispatch();
     const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
-
+    const history = useHistory();
     // завершение перемещения по dnd
     const [{ isHover }, dropRef] = useDrop({
       accept: 'ingredient',
@@ -38,7 +40,7 @@ function BurgerConstructor() {
         // меняем количество итемов в конструкторе
         dispatch(getburgerIngredients(item.id));
         // меняем счетчик
-        dispatch(increaseCounter(item.id));
+        dispatch(increaseCounter({id: item.id, type: item.type}));
       },
     });
 
@@ -71,22 +73,28 @@ function BurgerConstructor() {
 
     // Запрос на сервер для получения номера заказа
     const getOrder = () => {
-      // если булочки нет, то запрос на сервер не отправляется
-      if (bun) {
+      if (getCookie('refreshToken')) {
+        // если булочки нет, то запрос на сервер не отправляется
+        if (bun) {
           const ingredients = ingredientsData.map((item) => {
             return item._id
           });
           dispatch(getNumberOrder(ingredients));
+        } else {
+          setisWithoutBun(true);
+        }
+        setModal(true);
       } else {
-        setisWithoutBun(true);
-      }
-      setModal(true);  
+        // если пользователь не авторизован то редиректим на login
+        history.push('/login');
+      }  
     } 
 
     // удаление ингредиента
     const deleteIngredient = (item, index, isBun = false) => {
+
       dispatch(deleteBurgerIngredient(index));
-      dispatch(decreaseCounter(item._id));
+      dispatch(decreaseCounter({id: item._id, type: item.type}));
       dispatch(decreasePrice(isBun ? item.price * 2 : item.price));
     };
 

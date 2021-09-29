@@ -12,6 +12,10 @@ p, ul, h5, h3, h1 {
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

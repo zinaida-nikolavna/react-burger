@@ -1,11 +1,11 @@
 .header {
-    width: 1280px;
     height: 56px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 0 auto;
+    justify-content: space-evenly;
+    margin: 0 40px;
     font-family: 'JetBrains Mono',Arial, sans-serif;
+    background: #1C1C21;
 }
 
 .items {
@@ -15,4 +15,8 @@
 .item {
     display: flex;
     align-items: center;
+}
+
+.active {
+    color: #fff;
 }

@@ -44,6 +44,9 @@ export const burgerIngredientsReducer = createSlice({
             state.orderNumberFailed = false;
             state.orderNumber = action.payload;
             state.orderNumberRequest = false;
+            // очищаем конструктор и цену
+            state.burgerIngredients = [];
+            state.price = 0;
         },
         // если апи при получении номера заказа упало
         getNumberOrderFailed: (state) => {
@@ -67,17 +70,26 @@ export const burgerIngredientsReducer = createSlice({
         // увеличиваем счетчик
         increaseCounter: (state, action) => {
             // проверяем есть ли такой id ингредиента уже в объекте
-            if (action.payload in state.counter) {
+            if (action.payload.id in state.counter) {
                 // если да, увеличиваем на один
-                state.counter[action.payload] = state.counter[action.payload] + 1;
+                state.counter[action.payload.id] = state.counter[action.payload.id] + 1;
             } else {
-                // если нет, проставляем значение 1
-                state.counter[action.payload] = 1;
+                if (action.payload.type === 'bun') {
+                    // если булка, проставляем изначальное значение 2
+                    state.counter[action.payload.id] = 2;
+                } else {
+                    // если нет, проставляем значение 1
+                    state.counter[action.payload.id] = 1;
+                }
             }
         },
         // уменьшаем счетчик
         decreaseCounter: (state, action) => {
-            state.counter[action.payload] = state.counter[action.payload] - 1;
+            if (action.payload.type === 'bun') {
+                state.counter[action.payload.id] = state.counter[action.payload.id] - 2;
+            } else {
+                state.counter[action.payload.id] = state.counter[action.payload.id] - 1;
+            }
         },
         // увеличиваем цену
         increasePrice: (state, action) => {

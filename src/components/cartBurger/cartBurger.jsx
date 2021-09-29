@@ -9,20 +9,26 @@ function CartBurger({data}) {
     const counter = useSelector(state => state.burger.counter);
     const dispatch = useDispatch();
     const id = data ? data._id : null;
+    const type = data ? data.type : null;
     const [{isDragging}, dragRef] = useDrag({
         type: 'ingredient',
-        item: {id},
+        item: {id, type},
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })
     });
+
+    const openedIngredient = () => {
+        dispatch(showIngredient(data));
+        window.history.pushState({}, null, `http://localhost:3000/ingredients/${id}`);
+    }
 
     if (!data) {
         return null;
     } else {
         return (
             <>
-                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => dispatch(showIngredient(data))}>
+                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => openedIngredient()}>
                     {!!counter[id] && <Counter count={counter[id]} size='default' />}
                     <img src={data.image} alt='изображение ингредиента'/>
                     <div className={`${cartBurgerStyles.price} mt-1 mb-1`}>

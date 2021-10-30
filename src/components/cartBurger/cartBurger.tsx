@@ -5,11 +5,20 @@ import { showIngredient } from '../../services/store/burger';
 import { useDrag } from "react-dnd";
 import { TIngredient } from '../../utils/types';
 
-function CartBurger({data}: any): React.ReactElement {
+type TCartBurgerProps = {
+    data: TIngredient;
+}
+
+/**
+ * Компонент записи(ингредиент) в реестре ингредиентов
+ * @param data - данные ингредиента
+ * @returns 
+ */
+function CartBurger({data}: TCartBurgerProps): React.ReactElement {
     const counter = useSelector((state: any) => state.burger.counter);
     const dispatch = useDispatch();
-    const id = data ? data._id : null;
-    const type = data ? data.type : null;
+    const id = data._id;
+    const type = data.type;
     const [{isDragging}, dragRef] = useDrag({
         type: 'ingredient',
         item: {id, type},
@@ -18,14 +27,11 @@ function CartBurger({data}: any): React.ReactElement {
         })
     });
 
-    const openedIngredient = () => {
+    const openedIngredient = (): void => {
         dispatch(showIngredient(data));
         window.history.pushState({}, '', `http://localhost:3000/ingredients/${id}`);
     }
 
-    if (!data) {
-        return <></>;
-    } else {
         return (
             <>
                 <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => openedIngredient()}>
@@ -40,6 +46,5 @@ function CartBurger({data}: any): React.ReactElement {
             </>                                         
         );
     }
-}
 
 export default CartBurger;

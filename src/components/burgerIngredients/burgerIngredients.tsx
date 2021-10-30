@@ -6,6 +6,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { closeIngredient } from '../../services/store/burger';
 import {useEffect, useRef} from 'react';
 
+/**
+ * реестр ингредиентов
+ */
 function BurgerIngredients(): React.ReactElement {
     const dispatch = useDispatch();
 

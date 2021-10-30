@@ -26,6 +26,9 @@ type TIngredientWithKey = TIngredient & {
   key: string;
 }
 
+/**
+ * Реестр конструктора бургера
+ */
 function BurgerConstructor(): React.ReactElement {
     // стейт для открытия модального окна
     const [isOpenModal, setModal] = useState<boolean>(false);

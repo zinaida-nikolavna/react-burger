@@ -2,10 +2,14 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import headerStyles from './header.module.css';
 import { Link } from 'react-router-dom';
 import { useRouteMatch, useLocation } from 'react-router-dom';
+import {Location} from 'history';
 
-function AppHeader() {
-    const location = useLocation();
-    const { url } = useRouteMatch();
+/**
+ * Шапка сайта
+ */
+function AppHeader(): React.ReactElement {
+    const location = useLocation<Location>();
+    const { url } = useRouteMatch<{url: string}>();
     const constructor = '/';
     const profile = '/profile';
     

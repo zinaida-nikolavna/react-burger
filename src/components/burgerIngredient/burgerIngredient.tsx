@@ -13,6 +13,14 @@ type TBurgerIngredientProps = {
     deleteIngredient: (item: TIngredient, index: number) => void;
 }
 
+/**
+ * Компонент записи(ингредиент) в реестре конструктора бургера
+ * @param ingredient - данные игредиента
+ * @param id - уникальный uuid ингредиента
+ * @param index - индекс(положение) ингредиента в реестре
+ * @param deleteIngredient - функция удаления ингредиента
+ * @returns 
+ */
 function BurgerIngredient({ingredient, id, index, deleteIngredient}: TBurgerIngredientProps): React.ReactElement {
     const dispatch = useDispatch();
 

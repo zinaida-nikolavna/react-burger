@@ -6,12 +6,15 @@ import RegisterPage from '../../pages/register';
 import ResetPasswordPage from '../../pages/resetPassword';
 import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
-import { ProtectedRoute } from '../protected-route';
+import { ProtectedRoute } from '../protected-route.tsx';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';
 import { getBurgerIngredients } from '../../services/middleware/burger';
 
+/**
+ * Роутинг приложения
+ */
 function App(): React.ReactElement {
   // проверяем открыто ли модальное окно с ингредиентом
   // если да, то не должен происходить переход по маршруту

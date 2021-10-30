@@ -2,13 +2,14 @@ import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserInfo } from '../services/middleware/auth';
+import { RouteProps } from 'react-router';
 
-export function ProtectedRoute({ children, ...rest }) {
-    const [isUserLoaded, setUserLoaded] = useState(false);
+export function ProtectedRoute({ children, ...rest }: RouteProps): React.ReactElement {
+    const [isUserLoaded, setUserLoaded] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
-    const init = async () => {
+    const init = async (): Promise<void> => {
         await dispatch(getUserInfo());
         setUserLoaded(true);
     };
@@ -17,10 +18,10 @@ export function ProtectedRoute({ children, ...rest }) {
         init();
     }, []);
 
-    const {isLogged} = useSelector(state => state.auth);
+    const {isLogged} = useSelector((state: any) => state.auth);
 
     if (!isUserLoaded) {
-        return null;
+        return <></>;
     }
 
     return (

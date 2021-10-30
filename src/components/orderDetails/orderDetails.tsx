@@ -1,7 +1,21 @@
 import orderDetailsStyles from './orderDetails.module.css';
 import PropTypes from 'prop-types';
 
-function OrderDetails({orderNumber, isError, isWithoutBun, isLoading}) {
+type TOrderDetails = {
+    orderNumber: number;
+    isError: boolean;
+    isWithoutBun: boolean;
+    isLoading: boolean;
+}
+
+/**
+ * Компонент содержимого заказа
+ * @param orderNumber- номер заказа
+ * @param isError- флаг, что нужно показать ошибку при загрузке данных
+ * @param isLoading- флаг, что нужно показать заглушку, что данные ещё грузятся
+ * @param isWithoutBun- флаг, что нужно показать ошибку, что не выбрана булка
+ */
+function OrderDetails({orderNumber, isError, isWithoutBun, isLoading}: TOrderDetails): React.ReactElement {
     if (isError || isWithoutBun || isLoading) {
         return (
             <div className={`${orderDetailsStyles.order} pl-25 pr-25`}>

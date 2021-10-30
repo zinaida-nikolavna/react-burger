@@ -8,16 +8,20 @@ import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middle
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { getCookie } from '../utils/utils.js';
+import { TForm } from '../utils/types';
+import { clickCallback } from '../utils/types';
 
-// страница личного кабинета
-function ProfilePage() {
+/**
+ * Страница личного кабинета
+ */
+function ProfilePage(): React.ReactElement {
     const dispatch = useDispatch();
-    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector(state => state.auth);
-    const [activeName, setActiveName] = useState(true);
-    const [isLogged, setIsLogged] = useState(true);
-    const [activePassword, setActivePassword] = useState(true);
-    const [form, setValue] = useState({ email: emailUser, password: '', name: nameUser });
-    const onChange = e => {
+    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector((state: any) => state.auth);
+    const [activeName, setActiveName] = useState<boolean>(true);
+    const [isLogged, setIsLogged] = useState<boolean>(true);
+    const [activePassword, setActivePassword] = useState<boolean>(true);
+    const [form, setValue] = useState<TForm>({ email: emailUser, password: '', name: nameUser });
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
@@ -29,7 +33,7 @@ function ProfilePage() {
         setValue({ email: emailUser, password: '', name: nameUser });
     }, [emailUser, nameUser]);
 
-    const save = useCallback(
+    const save = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           dispatch(getRefreshUser(form));
@@ -37,7 +41,7 @@ function ProfilePage() {
         [dispatch,form]
     );
 
-    const cancel = useCallback(
+    const cancel = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           setValue({ email: emailUser, password: '', name: nameUser });
@@ -92,7 +96,6 @@ function ProfilePage() {
                             <form className={style.form}>
                                 <span className='mb-6'>
                                     <Input
-                                    className='name' 
                                     disabled={activeName} 
                                     type='text' 
                                     placeholder='Имя'

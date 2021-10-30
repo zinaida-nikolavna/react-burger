@@ -6,17 +6,21 @@ import AppHeader from '../components/header/header';
 import { registerNewUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils.js';
+import { TForm } from '../utils/types';
+import { clickCallback } from '../utils/types';
 
-// страница регистрации
-function RegisterPage() {
-    const [form, setValue] = useState({ email: '', password: '', name: '' });
-    const onChange = e => {
+/**
+ * Страница регистрации
+ */
+function RegisterPage(): React.ReactElement {
+    const [form, setValue] = useState<TForm>({ email: '', password: '', name: '' });
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const {nameUser, registerRequest, registerFailed} = useSelector(state => state.auth);
+    const {nameUser, registerRequest, registerFailed} = useSelector((state: any) => state.auth);
 
-    const register = useCallback(
+    const register = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           dispatch(registerNewUser(form));

@@ -6,17 +6,25 @@ import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetOldPassword } from '../services/middleware/auth';
 import { getCookie } from '../utils/utils.js';
+import { clickCallback } from '../utils/types';
 
-// страница логина
-function ResetPasswordPage() {
-    const [form, setValue] = useState({ password: '', token: ''});
-    const onChange = e => {
+type TForm = {
+  password: string;
+  token: string;
+}
+
+/**
+ * Страница сброса пароля
+ */
+function ResetPasswordPage(): React.ReactElement {
+    const [form, setValue] = useState<TForm>({ password: '', token: ''});
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector(state => state.auth);
+    const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector((state: any) => state.auth);
 
-    const changePassword = useCallback(
+    const changePassword = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           dispatch(resetOldPassword(form));

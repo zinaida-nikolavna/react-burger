@@ -6,20 +6,31 @@ import AppHeader from '../components/header/header';
 import { authUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils.js';
+import {Location} from 'history';
+import { TForm } from '../utils/types';
+import { clickCallback } from '../utils/types';
 
-// страница логина
-function LoginPage() {
-    const [form, setValue] = useState({ email: '', password: ''});
-    const onChange = e => {
+type TLoginForm = Pick<TForm, 'email' | 'password'>
+
+type LocationState = {
+    from: Location;
+};
+
+/**
+ * Страница логина
+ */
+function LoginPage(): React.ReactElement {
+    const [form, setValue] = useState<TLoginForm>({ email: '', password: ''});
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const location = useLocation();
+    const location = useLocation<LocationState>();
     const {state} = location;
 
-    const isLogged = useSelector(state => state.auth.isLogged);
+    const isLogged = useSelector((state: any) => state.auth.isLogged);
 
-    const login = useCallback(
+    const login = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           dispatch(authUser(form));

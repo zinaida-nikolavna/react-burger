@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-//import styles from './not-found.module.css';
 import style from './login.module.css';
 
-export const NotFound404 = () => {
+/**
+ * Страница 404
+ */
+export const NotFound404 = (): React.ReactElement => {
   return (
     <div className={style.container}>
       <div className={style.form}>

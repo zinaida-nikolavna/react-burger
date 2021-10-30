@@ -6,7 +6,7 @@ import RegisterPage from '../../pages/register';
 import ResetPasswordPage from '../../pages/resetPassword';
 import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
-import { ProtectedRoute } from '../protected-route.tsx';
+import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';

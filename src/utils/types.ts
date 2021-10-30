@@ -1,21 +1,4 @@
-import PropTypes from 'prop-types';
-
-export const dataPropTypes = PropTypes.shape({
-   _id: PropTypes.string,
-   name: PropTypes.string,
-   type: PropTypes.string,
-   proteins: PropTypes.number,
-   fat: PropTypes.number,
-   carbohydrates: PropTypes.number,
-   calories: PropTypes.number,
-   price: PropTypes.number,
-   image: PropTypes.string,
-   image_mobile: PropTypes.string,
-   image_large: PropTypes.string,
-   __v: PropTypes.number
- });
-
- export type TIngredient = {
+export type TIngredient = {
   _id: string;
   name: string;
   type: string;
@@ -29,3 +12,11 @@ export const dataPropTypes = PropTypes.shape({
   image_large: string;
   __v: number;
  };
+
+export type TForm = {
+  email: string;
+  password: string;
+  name: string;
+};
+
+export type clickCallback = (e: React.SyntheticEvent) => void;

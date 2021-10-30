@@ -4,7 +4,7 @@ import style from './login.module.css';
 import styleProfile from './profile.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
 import AppHeader from '../components/header/header';
-import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/actions/auth';
+import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { getCookie } from '../utils/utils.js';

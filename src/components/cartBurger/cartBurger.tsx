@@ -1,12 +1,12 @@
 import cartBurgerStyles from './cartBurger.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import {dataPropTypes} from '../../utils/PropTypes';
 import { useSelector, useDispatch } from 'react-redux';
-import { showIngredient } from '../../services/reducers/burger';
+import { showIngredient } from '../../services/store/burger';
 import { useDrag } from "react-dnd";
+import { TIngredient } from '../../utils/types';
 
-function CartBurger({data}) {
-    const counter = useSelector(state => state.burger.counter);
+function CartBurger({data}: any): React.ReactElement {
+    const counter = useSelector((state: any) => state.burger.counter);
     const dispatch = useDispatch();
     const id = data ? data._id : null;
     const type = data ? data.type : null;
@@ -20,11 +20,11 @@ function CartBurger({data}) {
 
     const openedIngredient = () => {
         dispatch(showIngredient(data));
-        window.history.pushState({}, null, `http://localhost:3000/ingredients/${id}`);
+        window.history.pushState({}, '', `http://localhost:3000/ingredients/${id}`);
     }
 
     if (!data) {
-        return null;
+        return <></>;
     } else {
         return (
             <>
@@ -43,7 +43,3 @@ function CartBurger({data}) {
 }
 
 export default CartBurger;
-
-CartBurger.propTypes = {
-    data: dataPropTypes
-};

@@ -1,7 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserInfo } from '../services/actions/auth';
+import { getUserInfo } from '../services/middleware/auth';
 
 export function ProtectedRoute({ children, ...rest }) {
     const [isUserLoaded, setUserLoaded] = useState(false);

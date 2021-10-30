@@ -5,7 +5,7 @@ import {
     getNumberOrderSuccess,
     getNumberOrderFailed,
     getNumberOrderRequest
-} from '../reducers/burger';
+} from '../store/burger';
 import {fetchData} from '../../utils/src.js';
 import {postData} from '../../utils/src.js';
 

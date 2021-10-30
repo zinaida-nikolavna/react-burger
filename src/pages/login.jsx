@@ -3,7 +3,7 @@ import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import style from './login.module.css';
 import AppHeader from '../components/header/header';
-import { authUser } from '../services/actions/auth';
+import { authUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils.js';
 

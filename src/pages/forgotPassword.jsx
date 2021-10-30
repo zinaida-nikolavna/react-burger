@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
-import { checkEmailExist } from '../services/actions/auth';
+import { checkEmailExist } from '../services/middleware/auth';
 import { getCookie } from '../utils/utils.js';
 
 // страница логина

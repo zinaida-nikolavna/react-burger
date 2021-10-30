@@ -10,12 +10,12 @@ import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';
-import { getBurgerIngredients } from '../../services/actions/burger';
+import { getBurgerIngredients } from '../../services/middleware/burger';
 
-function App() {
+function App(): React.ReactElement {
   // проверяем открыто ли модальное окно с ингредиентом
   // если да, то не должен происходить переход по маршруту
-  const ingredient = useSelector(state => state.burger.showedIngredient);
+  const ingredient = useSelector((state: any) => state.burger.showedIngredient);
   const dispatch = useDispatch();
   useEffect(()=> {
     dispatch(getBurgerIngredients())

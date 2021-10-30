@@ -24,7 +24,7 @@ import {
     userInfoFailed,
     refreshUserFailed,
     logoutRequestFailed
-} from '../reducers/auth';
+} from '../store/auth';
 
 // регистрируем нового пользователя
 export const registerNewUser = (form) => (dispatch) => {

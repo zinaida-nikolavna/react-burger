@@ -13,7 +13,7 @@ import {
   decreaseCounter,
   decreasePrice } from '../../services/store/burger';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
-import { getCookie } from '../../utils/utils.js';
+import { getCookie } from '../../utils/utils';
 import { TIngredient } from '../../utils/types';  
 import { useHistory } from "react-router-dom";
 

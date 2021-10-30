@@ -5,7 +5,7 @@ import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetOldPassword } from '../services/middleware/auth';
-import { getCookie } from '../utils/utils.js';
+import { getCookie } from '../utils/utils';
 import { clickCallback } from '../utils/types';
 
 type TForm = {

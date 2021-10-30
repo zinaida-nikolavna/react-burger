@@ -7,9 +7,8 @@ import AppHeader from '../components/header/header';
 import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
-import { getCookie } from '../utils/utils.js';
-import { TForm } from '../utils/types';
-import { clickCallback } from '../utils/types';
+import { getCookie } from '../utils/utils';
+import { TForm, clickCallback } from '../utils/types';
 
 /**
  * Страница личного кабинета

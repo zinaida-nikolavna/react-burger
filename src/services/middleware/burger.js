@@ -6,8 +6,8 @@ import {
     getNumberOrderFailed,
     getNumberOrderRequest
 } from '../store/burger';
-import {fetchData} from '../../utils/src.js';
-import {postData} from '../../utils/src.js';
+import {fetchData} from '../../utils/src';
+import {postData} from '../../utils/src';
 
 // получаем все доступные ингредиенты для бургеров
 export const getBurgerIngredients = () => (dispatch) => {

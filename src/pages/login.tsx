@@ -5,10 +5,9 @@ import style from './login.module.css';
 import AppHeader from '../components/header/header';
 import { authUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCookie } from '../utils/utils.js';
+import { getCookie } from '../utils/utils';
 import {Location} from 'history';
-import { TForm } from '../utils/types';
-import { clickCallback } from '../utils/types';
+import { TForm, clickCallback } from '../utils/types';
 
 type TLoginForm = Pick<TForm, 'email' | 'password'>
 

@@ -44,9 +44,10 @@ export const burgerIngredientsReducer = createSlice({
             state.orderNumberFailed = false;
             state.orderNumber = action.payload;
             state.orderNumberRequest = false;
-            // очищаем конструктор и цену
+            // очищаем конструктор, цену, счетчики
             state.burgerIngredients = [];
             state.price = 0;
+            state.counter = {};
         },
         // если апи при получении номера заказа упало
         getNumberOrderFailed: (state) => {

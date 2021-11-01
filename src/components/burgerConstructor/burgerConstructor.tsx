@@ -91,6 +91,7 @@ function BurgerConstructor(): React.ReactElement {
           const ingredients = ingredientsData.map((item) => {
             return item._id
           });
+          setisWithoutBun(false);
           dispatch(getNumberOrder(ingredients));
         } else {
           setisWithoutBun(true);

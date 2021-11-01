@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { registerNewUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils';
-import { TForm, clickCallback } from '../utils/types';
+import { TForm, submitCallback } from '../utils/types';
 
 /**
  * Страница регистрации
@@ -18,7 +18,7 @@ function RegisterPage(): React.ReactElement {
     const dispatch = useDispatch();
     const {nameUser, registerRequest, registerFailed} = useSelector((state: any) => state.auth);
 
-    const register = useCallback<clickCallback>(
+    const register = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(registerNewUser(form));
@@ -48,12 +48,12 @@ function RegisterPage(): React.ReactElement {
     
     return (
         <div className={style.container}>
-            <form className={style.form}>
+            <form className={style.form} onSubmit={register}>
                 <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
                 <span className='mb-6'><Input type='text' placeholder='Имя' onChange={onChange} value={form.name} name="name"/></span>
                 <span className='mb-6'><Input type='email' placeholder='E-mail' onChange={onChange} value={form.email} name="email"/></span>
                 <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name="password"/></span>
-                <Button type="primary" size="large" onClick={register}>Зарегистрироваться</Button>
+                <Button type="primary" size="large">Зарегистрироваться</Button>
             </form>
             <div className='text text_type_main-small text_color_inactive mt-20'>
                 Уже зарегистрированы? <Link to='/login' className={style.link}>Войти</Link>

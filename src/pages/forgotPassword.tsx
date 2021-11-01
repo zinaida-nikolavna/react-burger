@@ -5,7 +5,7 @@ import style from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkEmailExist } from '../services/middleware/auth';
 import { getCookie } from '../utils/utils';
-import { clickCallback } from '../utils/types';
+import { submitCallback } from '../utils/types';
 
 /**
  * страница Забыли пароль
@@ -19,7 +19,7 @@ function ForgotPasswordPage(): React.ReactElement {
         setEmail(e.target.value)
     };
 
-    const checkEmail = useCallback<clickCallback>(
+    const checkEmail = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(checkEmailExist(email));
@@ -59,10 +59,10 @@ function ForgotPasswordPage(): React.ReactElement {
 
     return (
       <div className={style.container}>
-        <form className={style.form}>
+        <form className={style.form} onSubmit={checkEmail}>
           <h1 className='text text_type_main-medium mb-6'>Восстановление пароля</h1>
           <span className='mb-6'><Input type='email' placeholder='Укажите e-mail' onChange={onChangeEmail} value={email}/></span>
-          <Button type="primary" size="large" onClick={checkEmail}>Восстановить</Button>
+          <Button type="primary" size="large">Восстановить</Button>
         </form>
         <div className='text text_type_main-small text_color_inactive mt-20'>
           Вспомнили пароль? <Link to='/login' className={style.link}>Войти</Link>

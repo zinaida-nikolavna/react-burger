@@ -7,7 +7,9 @@ import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middle
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { getCookie } from '../utils/utils';
-import { TForm, clickCallback } from '../utils/types';
+import { TForm, submitCallback } from '../utils/types';
+
+export type clickCallback = (e: React.SyntheticEvent) => void;
 
 /**
  * Страница личного кабинета
@@ -31,7 +33,7 @@ function ProfilePage(): React.ReactElement {
         setValue({ email: emailUser, password: '', name: nameUser });
     }, [emailUser, nameUser]);
 
-    const save = useCallback<clickCallback>(
+    const save = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(getRefreshUser(form));
@@ -89,7 +91,7 @@ function ProfilePage(): React.ReactElement {
                 <Switch>
                     <Route path='/profile' exact={true}>
                         {!refreshUserFailed && <div className={styleProfile.form}>   
-                            <form className={style.form}>
+                            <form className={style.form} onSubmit={save}>
                                 <span className='mb-6'>
                                     <Input
                                     disabled={activeName} 
@@ -121,7 +123,7 @@ function ProfilePage(): React.ReactElement {
                                     onIconClick={() => setActivePassword(false)}/>
                                 </span>
                                 <div>
-                                    <span className='mr-4'><Button type="primary" size="large" onClick={save}>Сохранить</Button></span>
+                                    <span className='mr-4'><Button type="primary" size="large">Сохранить</Button></span>
                                     <Button type="primary" size="large" onClick={cancel}>Отмена</Button>
                                 </div>
                             </form>

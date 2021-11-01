@@ -19,4 +19,4 @@ export type TForm = {
   name: string;
 };
 
-export type clickCallback = (e: React.SyntheticEvent) => void;
+export type submitCallback = (e: React.FormEvent<HTMLFormElement>) => void;

@@ -1,5 +1,4 @@
 import orderDetailsStyles from './orderDetails.module.css';
-import PropTypes from 'prop-types';
 
 type TOrderDetails = {
     orderNumber: number;
@@ -38,10 +37,3 @@ function OrderDetails({orderNumber, isError, isWithoutBun, isLoading}: TOrderDet
 }
 
 export default OrderDetails;
-
-OrderDetails.propTypes = {
-    orderNumber: PropTypes.number,
-    isError: PropTypes.bool,
-    isWithoutBun: PropTypes.bool,
-    isLoading: PropTypes.bool
-};

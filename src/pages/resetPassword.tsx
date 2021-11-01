@@ -5,7 +5,7 @@ import style from './login.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetOldPassword } from '../services/middleware/auth';
 import { getCookie } from '../utils/utils';
-import { clickCallback } from '../utils/types';
+import { submitCallback } from '../utils/types';
 
 type TForm = {
   password: string;
@@ -23,7 +23,7 @@ function ResetPasswordPage(): React.ReactElement {
     const dispatch = useDispatch();
     const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector((state: any) => state.auth);
 
-    const changePassword = useCallback<clickCallback>(
+    const changePassword = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(resetOldPassword(form));
@@ -66,11 +66,11 @@ function ResetPasswordPage(): React.ReactElement {
 
     return (
       <div className={style.container}>
-        <form className={style.form}>
+        <form className={style.form} onSubmit={changePassword}>
           <h1 className='text text_type_main-medium mb-6'>Восстановление пароля</h1>
           <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name='password'/></span>
           <span className='mb-6'><Input type='text' placeholder='Введите код из письма' onChange={onChange} value={form.token} name='token'/></span>
-          <Button type="primary" size="large" onClick={changePassword}>Сохранить</Button>
+          <Button type="primary" size="large">Сохранить</Button>
         </form>
         <div className='text text_type_main-small text_color_inactive mt-20'>
           Вспомнили пароль? <Link to='/login' className={style.link}>Войти</Link>

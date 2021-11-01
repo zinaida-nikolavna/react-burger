@@ -6,7 +6,7 @@ import { authUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils';
 import {Location} from 'history';
-import { TForm, clickCallback } from '../utils/types';
+import { TForm, submitCallback } from '../utils/types';
 
 type TLoginForm = Pick<TForm, 'email' | 'password'>
 
@@ -28,7 +28,7 @@ function LoginPage(): React.ReactElement {
 
     const isLogged = useSelector((state: any) => state.auth.isLogged);
 
-    const login = useCallback<clickCallback>(
+    const login = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(authUser(form));
@@ -47,11 +47,11 @@ function LoginPage(): React.ReactElement {
 
     return (
         <div className={style.container}>
-            <form className={style.form}>
+            <form className={style.form} onSubmit={login}>
                 <h1 className='text text_type_main-medium mb-6'>Вход</h1>
                 <span className='mb-6'><Input type='email' placeholder='E-mail' onChange={onChange} value={form.email} name='email'/></span>
                 <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name="password"/></span>
-                <Button type="primary" size="large" onClick={login}>Войти</Button>
+                <Button type="primary" size="large">Войти</Button>
             </form>
             <div className='text text_type_main-small text_color_inactive mt-20'>
                 Вы новый пользователь? <Link to='/register' className={style.link}>Зарегистрироваться</Link>

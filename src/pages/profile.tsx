@@ -3,7 +3,6 @@ import {EmailInput, Input, Button} from '@ya.praktikum/react-developer-burger-ui
 import style from './login.module.css';
 import styleProfile from './profile.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
-import AppHeader from '../components/header/header';
 import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
@@ -77,8 +76,6 @@ function ProfilePage(): React.ReactElement {
     }
 
     return (
-        <>
-            <AppHeader />
             <div className={styleProfile.container}>
                 <div className={styleProfile.navWrapper}>
                     <nav className={styleProfile.nav}>
@@ -142,7 +139,6 @@ function ProfilePage(): React.ReactElement {
                 </Switch>
                 </div>
             </div>
-        </>
     )
 }
 

@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './login.module.css';
 import { Link, Redirect } from 'react-router-dom';
-import AppHeader from '../components/header/header';
 import { registerNewUser } from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils';
@@ -48,21 +47,18 @@ function RegisterPage(): React.ReactElement {
     }
     
     return (
-        <>
-            <AppHeader />
-            <div className={style.container}>
-                <form className={style.form}>
-                    <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
-                    <span className='mb-6'><Input type='text' placeholder='Имя' onChange={onChange} value={form.name} name="name"/></span>
-                    <span className='mb-6'><Input type='email' placeholder='E-mail' onChange={onChange} value={form.email} name="email"/></span>
-                    <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name="password"/></span>
-                    <Button type="primary" size="large" onClick={register}>Зарегистрироваться</Button>
-                </form>
-                <div className='text text_type_main-small text_color_inactive mt-20'>
-                    Уже зарегистрированы? <Link to='/login' className={style.link}>Войти</Link>
-                </div>
+        <div className={style.container}>
+            <form className={style.form}>
+                <h1 className='text text_type_main-medium mb-6'>Регистрация</h1>
+                <span className='mb-6'><Input type='text' placeholder='Имя' onChange={onChange} value={form.name} name="name"/></span>
+                <span className='mb-6'><Input type='email' placeholder='E-mail' onChange={onChange} value={form.email} name="email"/></span>
+                <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name="password"/></span>
+                <Button type="primary" size="large" onClick={register}>Зарегистрироваться</Button>
+            </form>
+            <div className='text text_type_main-small text_color_inactive mt-20'>
+                Уже зарегистрированы? <Link to='/login' className={style.link}>Войти</Link>
             </div>
-        </>
+        </div>
     )
 }
 

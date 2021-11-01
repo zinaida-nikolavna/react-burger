@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import style from './login.module.css';
-import AppHeader from '../components/header/header';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetOldPassword } from '../services/middleware/auth';
 import { getCookie } from '../utils/utils';
@@ -66,20 +65,17 @@ function ResetPasswordPage(): React.ReactElement {
     }
 
     return (
-        <>
-        <AppHeader />
-            <div className={style.container}>
-                <form className={style.form}>
-                    <h1 className='text text_type_main-medium mb-6'>Восстановление пароля</h1>
-                    <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name='password'/></span>
-                    <span className='mb-6'><Input type='text' placeholder='Введите код из письма' onChange={onChange} value={form.token} name='token'/></span>
-                    <Button type="primary" size="large" onClick={changePassword}>Сохранить</Button>
-                </form>
-                <div className='text text_type_main-small text_color_inactive mt-20'>
-                    Вспомнили пароль? <Link to='/login' className={style.link}>Войти</Link>
-                </div> 
-            </div>
-        </>
+      <div className={style.container}>
+        <form className={style.form}>
+          <h1 className='text text_type_main-medium mb-6'>Восстановление пароля</h1>
+          <span className='mb-6'><PasswordInput onChange={onChange} value={form.password} name='password'/></span>
+          <span className='mb-6'><Input type='text' placeholder='Введите код из письма' onChange={onChange} value={form.token} name='token'/></span>
+          <Button type="primary" size="large" onClick={changePassword}>Сохранить</Button>
+        </form>
+        <div className='text text_type_main-small text_color_inactive mt-20'>
+          Вспомнили пароль? <Link to='/login' className={style.link}>Войти</Link>
+        </div> 
+      </div>
     )
 }
 

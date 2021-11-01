@@ -11,6 +11,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';
 import { getBurgerIngredients } from '../../services/middleware/burger';
+import AppHeader from '../../components/header/header';
 
 /**
  * Роутинг приложения
@@ -26,6 +27,7 @@ function App(): React.ReactElement {
 
     return (
       <Router>
+        <AppHeader />
         <Switch>
           <Route path="/" exact={true}>
             <MainPage />

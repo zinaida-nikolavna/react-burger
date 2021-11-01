@@ -31,15 +31,17 @@ type TServerResponse = {
   message: string;
 }
 
-const FETCH_URL = 'https://norma.nomoreparties.space/api/ingredients';
-const POST_ENDPOINT = 'https://norma.nomoreparties.space/api/orders';
-const REGISTER = 'https://norma.nomoreparties.space/api/auth/register';
-const EMAIL_EXIST = 'https://norma.nomoreparties.space/api/password-reset';
-const PASSWORD_RESET = 'https://norma.nomoreparties.space/api/password-reset/reset';
-const AUTH = 'https://norma.nomoreparties.space/api/auth/login';
-const GET_USER = 'https://norma.nomoreparties.space/api/auth/user';
-const REFRESH_TOKEN = 'https://norma.nomoreparties.space/api/auth/token';
-const LOGOUT = 'https://norma.nomoreparties.space/api/auth/logout';
+const API_URL = 'https://norma.nomoreparties.space/api';
+
+const FETCH_URL = `${API_URL}/ingredients`;
+const POST_ENDPOINT = `${API_URL}/orders`;
+const REGISTER = `${API_URL}/auth/register`;
+const EMAIL_EXIST = `${API_URL}/password-reset`;
+const PASSWORD_RESET = `${API_URL}/password-reset/reset`;
+const AUTH = `${API_URL}/auth/login`;
+const GET_USER = `${API_URL}/auth/user`;
+const REFRESH_TOKEN = `${API_URL}/auth/token`;
+const LOGOUT = `${API_URL}/auth/logout`;
 
 const getResponse = <T>(res: Response): Promise<T> => {
   return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);

@@ -1,4 +1,3 @@
-import AppHeader from '../components/header/header';
 import BurgerIngredients from '../components/burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../components/burgerConstructor/burgerConstructor';
 import style from './mainPage.module.css';
@@ -32,7 +31,6 @@ function MainPage(): React.ReactElement {
   } else {
     return (
       <div style={styles}>
-          <AppHeader />
         <main className={style.main}>
           <DndProvider backend={HTML5Backend}>
               {!!items.length && <BurgerIngredients />}

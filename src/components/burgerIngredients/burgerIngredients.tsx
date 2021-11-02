@@ -12,9 +12,6 @@ import {useEffect, useRef} from 'react';
 function BurgerIngredients(): React.ReactElement {
     const dispatch = useDispatch();
 
-    // получаем данные о том, какой ингредиент показывать в модальном окне
-    const ingredient = useSelector((state: any) => state.burger.showedIngredient);
-
     const tabsRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLDivElement>(null);
 
@@ -50,16 +47,6 @@ function BurgerIngredients(): React.ReactElement {
 
     return (
         <section>
-            {ingredient && 
-            <Modal title='Детали ингредиента' isOpened={!!ingredient} onModalClose={() => onModalClose()}>
-                    <IngredientDetails 
-                        image={ingredient.image}
-                        name={ingredient.name}
-                        calories={ingredient.calories}
-                        proteins={ingredient.proteins}
-                        fat={ingredient.fat}
-                        carbohydrates={ingredient.carbohydrates} />
-            </Modal>}
             <h1 className='text text_type_main-large mt-10 mb-5'>Соберите бургер</h1>
             <nav ref={navRef}>
                 <ul className={burgerIngredientsStyles.tabs}>

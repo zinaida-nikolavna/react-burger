@@ -14,9 +14,14 @@
 
 .price {
     display: flex;
+    justify-content: center;
 }
 
 .name {
    height: 48px;
    text-align: center;
+}
+
+.link {
+    color: inherit;
 }

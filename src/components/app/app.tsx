@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import LoginPage from '../../pages/login';
 import MainPage from '../../pages/mainPage';
 import RegisterPage from '../../pages/register';
@@ -8,27 +8,45 @@ import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
 import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';
 import { getBurgerIngredients } from '../../services/middleware/burger';
 import AppHeader from '../../components/header/header';
+import {Location} from 'history';
+import Modal from '../../components/modal/modal';
+
+type TLocataionState = {
+  from: Location;
+  background: Location;
+};
+
+type THistory = {
+  action: string;
+}
 
 /**
  * Роутинг приложения
  */
 function App(): React.ReactElement {
-  // проверяем открыто ли модальное окно с ингредиентом
-  // если да, то не должен происходить переход по маршруту
-  const ingredient = useSelector((state: any) => state.burger.showedIngredient);
+  let location = useLocation<TLocataionState>();
+  let history = useHistory<THistory>();
+  let background = location.state && location.state.background;
+  const action = history.action ==='PUSH' || history.action ==='REPLACE';
+  const modalIngredientOpen = action && location.state && location.state.background;
+
   const dispatch = useDispatch();
   useEffect(()=> {
     dispatch(getBurgerIngredients())
   }, [dispatch]);
 
+  let back = () => {
+    history.goBack();
+  };
+
     return (
-      <Router>
+      <>
         <AppHeader />
-        <Switch>
+        <Switch location={modalIngredientOpen || location}>
           <Route path="/" exact={true}>
             <MainPage />
           </Route>
@@ -44,9 +62,9 @@ function App(): React.ReactElement {
           <Route path="/reset-password">
             <ResetPasswordPage />
           </Route>
-          {!ingredient && <Route path='/ingredients/:id'>
-            <IngredientDetails />
-          </Route>}
+          <Route path="/ingredients/:id" exact={true}>
+              <IngredientDetails />
+          </Route>
           <ProtectedRoute path={'/profile'}>
             <ProfilePage />
           </ProtectedRoute>
@@ -54,7 +72,12 @@ function App(): React.ReactElement {
             <NotFound404 />
           </Route>
         </Switch>
-      </Router>
+        {!!modalIngredientOpen && (<Route path='/ingredients/:id'>
+            <Modal title='Детали ингредиента' isOpened={true} onModalClose={() => back()}>
+                <IngredientDetails isModal={true}/>
+            </Modal>
+          </Route>)}
+      </>
     );
 }
 

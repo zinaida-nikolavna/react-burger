@@ -4,7 +4,9 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../../utils/types'; 
 
-type TIngredientDetailsProps = Partial<Pick<TIngredient, 'image' | 'name' | 'calories' | 'proteins' | 'fat' | 'carbohydrates'>>;
+type TIngredientDetailsProps = {
+    isModal?: boolean;
+}
 
 type TItems = {
     title: 'Калории, ккал' | 'Белки, г' | 'Жиры, г' | 'Углеводы, г';
@@ -29,7 +31,7 @@ const Items: React.FC<TItems> = ({title, characteristic}) => {
 /**
  * Данные игредиента (открываются в модальном окне и в отдельной странице)
  */
-function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}: TIngredientDetailsProps): React.ReactElement {
+function IngredientDetails({isModal}: TIngredientDetailsProps): React.ReactElement {
     const [ingredient, setIngredient] = useState<TIngredient>();
     const { itemsFailed, itemsRequest, items } = useSelector((state: any) => state.burger);
     const { id } = useParams<{id: string}>();
@@ -42,7 +44,7 @@ function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}
         [items]
     );
 
-    if ((!ingredient || !items.length) && !image ) {
+    if ((!ingredient || !items.length) ) {
         return <></>;
     }
 
@@ -60,15 +62,15 @@ function IngredientDetails({image, name, calories, proteins, fat, carbohydrates}
         )
     } else {
     return (
-        <div className={ingredient ? `${IngredientDetailsStyles.page}` : 'ml-25 mr-25'}>
-            {ingredient && <h3 className='text text_type_main-large'>Детали ингредиента</h3>}
-            <img src={image || ingredient?.image} className={`${IngredientDetailsStyles.img} mb-4`} alt='изображение ингредиента'/>
-            <h5 className={`${IngredientDetailsStyles.title} text text_type_main-medium mb-8`}>{name || ingredient?.name}</h5>
+        <div className={!isModal ? `${IngredientDetailsStyles.page}` : 'ml-25 mr-25'}>
+            {!isModal && <h3 className='text text_type_main-large'>Детали ингредиента</h3>}
+            <img src={ingredient.image} className={`${IngredientDetailsStyles.img} mb-4`} alt='изображение ингредиента'/>
+            <h5 className={`${IngredientDetailsStyles.title} text text_type_main-medium mb-8`}>{ingredient.name}</h5>
             <div className={`${IngredientDetailsStyles.charectiristics} mb-15`}>
-                <Items title='Калории, ккал' characteristic={calories || ingredient?.calories} />
-                <Items title='Белки, г' characteristic={proteins || ingredient?.proteins} />
-                <Items title='Жиры, г' characteristic={fat || ingredient?.fat} />
-                <Items title='Углеводы, г' characteristic={carbohydrates || ingredient?.carbohydrates} />
+                <Items title='Калории, ккал' characteristic={ingredient.calories} />
+                <Items title='Белки, г' characteristic={ingredient.proteins} />
+                <Items title='Жиры, г' characteristic={ingredient.fat} />
+                <Items title='Углеводы, г' characteristic={ingredient.carbohydrates} />
             </div>
         </div>
         )

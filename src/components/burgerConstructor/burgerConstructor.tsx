@@ -145,13 +145,13 @@ function BurgerConstructor(): React.ReactElement {
                     Оформить заказ
                 </Button>
             </div>
-            <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
+            {!!orderNumber && <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
                 <OrderDetails 
                     orderNumber={orderNumber} 
                     isError={orderNumberFailed}
                     isLoading={orderNumberRequest}
                     isWithoutBun={isWithoutBun}/>
-            </Modal>
+            </Modal>}
         </section>
     );
 }

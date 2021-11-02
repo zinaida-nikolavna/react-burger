@@ -28,6 +28,7 @@ function Modal({onModalClose, title, isOpened, children}: TModalProps): React.Re
             if (e.key === 'Escape') {
                 onModalClose();
             }
+            return;
         },
         [onModalClose]
     );

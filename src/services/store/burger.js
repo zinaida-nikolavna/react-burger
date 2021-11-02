@@ -7,7 +7,6 @@ export const burgerIngredientsReducer = createSlice({
         items: [], // итемы игредиентов бургера
         itemsRequest: false,
         itemsFailed: false,
-        showedIngredient: null, // ингредиент в модальном окне
         orderNumberRequest: false,
         orderNumber: null, // номер заказа
         orderNumberFailed: false,
@@ -27,14 +26,6 @@ export const burgerIngredientsReducer = createSlice({
         getIngredientsFailed: (state) => {
             state.itemsFailed = true;
             state.itemsRequest = false;
-        },
-        // записываем в стейт ингредиент, который показываем в модальном окне
-        showIngredient: (state, action) => {
-            state.showedIngredient = action.payload;
-        },
-        // удаляем ингредиент при закрытии модального окна, очищаем стейт
-        closeIngredient: (state) => {
-            state.showedIngredient = null;
         },
         getNumberOrderRequest: (state) => {
             state.orderNumberRequest = true;

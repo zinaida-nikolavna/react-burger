@@ -1,9 +1,10 @@
 import cartBurgerStyles from './cartBurger.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
-import { showIngredient } from '../../services/store/burger';
+import { useSelector } from 'react-redux';
 import { useDrag } from "react-dnd";
 import { TIngredient } from '../../utils/types';
+import { Link, useLocation } from "react-router-dom";
+import {Location} from 'history';
 
 type TCartBurgerProps = {
     data: TIngredient;
@@ -15,8 +16,8 @@ type TCartBurgerProps = {
  * @returns 
  */
 function CartBurger({data}: TCartBurgerProps): React.ReactElement {
+    let location = useLocation<Location>();
     const counter = useSelector((state: any) => state.burger.counter);
-    const dispatch = useDispatch();
     const id = data._id;
     const type = data.type;
     const [{isDragging}, dragRef] = useDrag({
@@ -27,14 +28,15 @@ function CartBurger({data}: TCartBurgerProps): React.ReactElement {
         })
     });
 
-    const openedIngredient = (): void => {
-        dispatch(showIngredient(data));
-        window.history.pushState({}, '', `http://localhost:3000/ingredients/${id}`);
-    }
-
         return (
             <>
-                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`} onClick={() => openedIngredient()}>
+                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`}>
+                    <Link
+                        className={cartBurgerStyles.link}
+                        to={{
+                        pathname: `/ingredients/${id}`,
+                        state: { background: location },
+                    }}>
                     {!!counter[id] && <Counter count={counter[id]} size='default' />}
                     <img src={data.image} alt='изображение ингредиента'/>
                     <div className={`${cartBurgerStyles.price} mt-1 mb-1`}>
@@ -42,6 +44,7 @@ function CartBurger({data}: TCartBurgerProps): React.ReactElement {
                         <CurrencyIcon type='primary' />
                     </div>
                     <h5 className={`${cartBurgerStyles.name} text text_type_main-default`}>{data.name}</h5>
+                    </Link>
                 </div>
             </>                                         
         );

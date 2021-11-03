@@ -1,19 +1,34 @@
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
 import {useRef} from 'react';
 import { useDispatch } from 'react-redux';
 import burgerIngredientStyles from './burgerIngredient.module.css';
-import { moveCard } from '../../services/reducers/burger';
-import PropTypes from 'prop-types';
+import { moveCard } from '../../services/store/burger';
+import { TIngredient } from '../../utils/types'; 
 
-function BurgerIngredient({ingredient, id, index, deleteIngredient}) {
+type TBurgerIngredientProps = {
+    ingredient: TIngredient;
+    id: string;
+    index: number;
+    deleteIngredient: (item: TIngredient, index: number) => void;
+}
+
+/**
+ * Компонент записи(ингредиент) в реестре конструктора бургера
+ * @param ingredient - данные игредиента
+ * @param id - уникальный uuid ингредиента
+ * @param index - индекс(положение) ингредиента в реестре
+ * @param deleteIngredient - функция удаления ингредиента
+ * @returns 
+ */
+function BurgerIngredient({ingredient, id, index, deleteIngredient}: TBurgerIngredientProps): React.ReactElement {
     const dispatch = useDispatch();
 
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
 
     const [, drop] = useDrop({
         accept: 'element',
-        hover(item, monitor) {
+        hover(item: {index: number}, monitor: DropTargetMonitor) {
             if (!ref.current) {
                 return;
             }
@@ -30,6 +45,9 @@ function BurgerIngredient({ingredient, id, index, deleteIngredient}) {
             // Determine mouse position
             const clientOffset = monitor.getClientOffset();
             // Get pixels to the top
+            if (!clientOffset) {
+              return;  
+            }
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
             // Only perform the move when the mouse has crossed half of the items height
             // When dragging downwards, only move when the cursor is below 50%
@@ -80,10 +98,3 @@ function BurgerIngredient({ingredient, id, index, deleteIngredient}) {
 }
 
 export default BurgerIngredient;
-
-BurgerIngredient.propTypes = {
-    ingredient: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
-    deleteIngredient: PropTypes.func.isRequired
-};

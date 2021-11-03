@@ -3,40 +3,52 @@ import burgerConstructorStyles from './burgerConstructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal'; 
 import OrderDetails from '../orderDetails/orderDetails';
-import { getNumberOrder } from '../../services/actions/burger';
+import { getNumberOrder } from '../../services/middleware/burger';
 import { useSelector, useDispatch } from 'react-redux';
-import { useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrop } from "react-dnd";
 import { 
   getburgerIngredients, 
   increaseCounter, 
   deleteBurgerIngredient, 
   decreaseCounter,
-  decreasePrice } from '../../services/reducers/burger';
+  decreasePrice } from '../../services/store/burger';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
-import { getCookie } from '../../utils/utils.js';  
+import { getCookie } from '../../utils/utils';
+import { TIngredient } from '../../utils/types';  
 import { useHistory } from "react-router-dom";
 
+type TItem = {
+  id: string;
+  type: string;
+}
 
-function BurgerConstructor() {
+type TIngredientWithKey = TIngredient & {
+  key: string;
+}
+
+/**
+ * Реестр конструктора бургера
+ */
+function BurgerConstructor(): React.ReactElement {
     // стейт для открытия модального окна
-    const [isOpenModal, setModal] = useState(false);
+    const [isOpenModal, setModal] = useState<boolean>(false);
     // стейт для булочки
-    const [bun, setBun] = useState(null);
+    const [bun, setBun] = useState<TIngredient>();
     // стейт для проверки с булочкой заказ или нет
-    const [isWithoutBun, setisWithoutBun] = useState(false);
+    const [isWithoutBun, setisWithoutBun] = useState<boolean>(false);
     // получаем итемы в конструкторе
-    const ingredientsData = useSelector(state => state.burger.burgerIngredients);
+    const ingredientsData: TIngredientWithKey[] = useSelector((state: any) => state.burger.burgerIngredients);
 
     const dispatch = useDispatch();
-    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
+    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector((state: any) => state.burger);
     const history = useHistory();
     // завершение перемещения по dnd
     const [{ isHover }, dropRef] = useDrop({
       accept: 'ingredient',
-      collect: monitor => ({
+      collect: (monitor: DropTargetMonitor) => ({
         isHover: monitor.isOver(),
       }),
-      drop(item) {
+      drop(item: TItem) {
         // меняем количество итемов в конструкторе
         dispatch(getburgerIngredients(item.id));
         // меняем счетчик
@@ -47,9 +59,9 @@ function BurgerConstructor() {
     const border = isHover ? '2px solid lightgreen' : '0px';
 
     useEffect(() => {
-      const bunsIndex = []; // индекс булки в массиве ingredientsData
-      const buns = []; // массив item булок
-      ingredientsData.forEach((item, index) => {
+      const bunsIndex: number[] = []; // индекс булки в массиве ingredientsData
+      const buns: TIngredient[] = []; // массив item булок
+      ingredientsData.forEach((item: TIngredient, index: number) => {
         // проходимся по массиву, если булка, то пушим в массивы для булки
         if (item.type === 'bun') {
           bunsIndex.push(index);
@@ -72,13 +84,14 @@ function BurgerConstructor() {
    }, [ingredientsData]);
 
     // Запрос на сервер для получения номера заказа
-    const getOrder = () => {
+    const getOrder = (): void => {
       if (getCookie('refreshToken')) {
         // если булочки нет, то запрос на сервер не отправляется
         if (bun) {
           const ingredients = ingredientsData.map((item) => {
             return item._id
           });
+          setisWithoutBun(false);
           dispatch(getNumberOrder(ingredients));
         } else {
           setisWithoutBun(true);
@@ -91,7 +104,7 @@ function BurgerConstructor() {
     } 
 
     // удаление ингредиента
-    const deleteIngredient = (item, index, isBun = false) => {
+    const deleteIngredient = (item: TIngredient, index: number, isBun: boolean = false): void => {
 
       dispatch(deleteBurgerIngredient(index));
       dispatch(decreaseCounter({id: item._id, type: item.type}));
@@ -132,13 +145,13 @@ function BurgerConstructor() {
                     Оформить заказ
                 </Button>
             </div>
-            <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
+            {!!orderNumber && <Modal title='' isOpened={isOpenModal} onModalClose={() => setModal(false)}>
                 <OrderDetails 
                     orderNumber={orderNumber} 
                     isError={orderNumberFailed}
                     isLoading={orderNumberRequest}
                     isWithoutBun={isWithoutBun}/>
-            </Modal>
+            </Modal>}
         </section>
     );
 }

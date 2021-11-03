@@ -5,8 +5,8 @@ import {registerUser,
         getUserRequest,
         getNewToken,
         refreshUser,
-        logoutRequest} from '../../utils/src.js';
-import {setCookie, deleteCookie, getCookie} from '../../utils/utils.js';
+        logoutRequest} from '../../utils/src';
+import {setCookie, deleteCookie} from '../../utils/utils';
 import {
     registerRequest,
     registerSuccess,
@@ -24,7 +24,7 @@ import {
     userInfoFailed,
     refreshUserFailed,
     logoutRequestFailed
-} from '../reducers/auth';
+} from '../store/auth';
 
 // регистрируем нового пользователя
 export const registerNewUser = (form) => (dispatch) => {

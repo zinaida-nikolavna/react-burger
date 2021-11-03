@@ -1,19 +1,34 @@
 import ReactDOM from 'react-dom';
-import {useEffect, useCallback} from 'react';
+import {useEffect, useCallback, SyntheticEvent} from 'react';
 import modalStyles from './modal.module.css';
 import ModalOverlay from '../modalOverlay/modalOverlay';
 import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 
+export type TModalProps = {
+    onModalClose: () => void;
+    title: string;
+    isOpened: boolean;
+    children: React.ReactElement;
+}
 
-function Modal({onModalClose, title, isOpened, children}) {
+type keyDownCallback = (e: KeyboardEvent) => void;
+
+/**
+ * Компонент модального окна
+ * @param onModalClose - функция закрытия модального окна
+ * @param title - заголовок модального окна
+ * @param isOpened - флаг, открыто ли окно
+ * @param children - содержимое модального окна (компонент)
+ */
+function Modal({onModalClose, title, isOpened, children}: TModalProps): React.ReactElement {
 
     // закрываем модальное окно по Escape
-    const keyDown = useCallback (
+    const keyDown = useCallback<keyDownCallback>(
         e => {
             if (e.key === 'Escape') {
                 onModalClose();
             }
+            return;
         },
         [onModalClose]
     );
@@ -24,13 +39,13 @@ function Modal({onModalClose, title, isOpened, children}) {
     }, [keyDown]);
 
     if (!isOpened) { 
-        return null;
+        return <></>;
     };
 
     return ReactDOM.createPortal(
         (
             <>
-                <ModalOverlay onClose={onModalClose}/>
+                <ModalOverlay onModalClose={onModalClose}/>
                 <div className={`${modalStyles.modal} pl-10 pr-10 pb-10 pt-10`}>
                     <div className={modalStyles.header}>
                         <h3 className='text text_type_main-large'>{title}</h3>
@@ -40,15 +55,8 @@ function Modal({onModalClose, title, isOpened, children}) {
                 </div>
             </>
         ),
-        document.getElementById('modal')
+        document.getElementById('modal') as HTMLElement
     )
 }
 
 export default Modal;
-
-Modal.propTypes = {
-    onModalClose: PropTypes.func.isRequired,
-    title: PropTypes.string,
-    isOpened: PropTypes.bool.isRequired,
-    children: PropTypes.element.isRequired
-};

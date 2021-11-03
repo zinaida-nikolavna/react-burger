@@ -3,21 +3,25 @@ import {EmailInput, Input, Button} from '@ya.praktikum/react-developer-burger-ui
 import style from './login.module.css';
 import styleProfile from './profile.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
-import AppHeader from '../components/header/header';
-import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/actions/auth';
+import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/middleware/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
-import { getCookie } from '../utils/utils.js';
+import { getCookie } from '../utils/utils';
+import { TForm, submitCallback } from '../utils/types';
 
-// страница личного кабинета
-function ProfilePage() {
+export type clickCallback = (e: React.SyntheticEvent) => void;
+
+/**
+ * Страница личного кабинета
+ */
+function ProfilePage(): React.ReactElement {
     const dispatch = useDispatch();
-    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector(state => state.auth);
-    const [activeName, setActiveName] = useState(true);
-    const [isLogged, setIsLogged] = useState(true);
-    const [activePassword, setActivePassword] = useState(true);
-    const [form, setValue] = useState({ email: emailUser, password: '', name: nameUser });
-    const onChange = e => {
+    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector((state: any) => state.auth);
+    const [activeName, setActiveName] = useState<boolean>(true);
+    const [isLogged, setIsLogged] = useState<boolean>(true);
+    const [activePassword, setActivePassword] = useState<boolean>(true);
+    const [form, setValue] = useState<TForm>({ email: emailUser, password: '', name: nameUser });
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
@@ -29,7 +33,7 @@ function ProfilePage() {
         setValue({ email: emailUser, password: '', name: nameUser });
     }, [emailUser, nameUser]);
 
-    const save = useCallback(
+    const save = useCallback<submitCallback>(
         e => {
           e.preventDefault();
           dispatch(getRefreshUser(form));
@@ -37,7 +41,7 @@ function ProfilePage() {
         [dispatch,form]
     );
 
-    const cancel = useCallback(
+    const cancel = useCallback<clickCallback>(
         e => {
           e.preventDefault();
           setValue({ email: emailUser, password: '', name: nameUser });
@@ -74,8 +78,6 @@ function ProfilePage() {
     }
 
     return (
-        <>
-            <AppHeader />
             <div className={styleProfile.container}>
                 <div className={styleProfile.navWrapper}>
                     <nav className={styleProfile.nav}>
@@ -89,10 +91,9 @@ function ProfilePage() {
                 <Switch>
                     <Route path='/profile' exact={true}>
                         {!refreshUserFailed && <div className={styleProfile.form}>   
-                            <form className={style.form}>
+                            <form className={style.form} onSubmit={save}>
                                 <span className='mb-6'>
                                     <Input
-                                    className='name' 
                                     disabled={activeName} 
                                     type='text' 
                                     placeholder='Имя'
@@ -122,7 +123,7 @@ function ProfilePage() {
                                     onIconClick={() => setActivePassword(false)}/>
                                 </span>
                                 <div>
-                                    <span className='mr-4'><Button type="primary" size="large" onClick={save}>Сохранить</Button></span>
+                                    <span className='mr-4'><Button type="primary" size="large">Сохранить</Button></span>
                                     <Button type="primary" size="large" onClick={cancel}>Отмена</Button>
                                 </div>
                             </form>
@@ -140,7 +141,6 @@ function ProfilePage() {
                 </Switch>
                 </div>
             </div>
-        </>
     )
 }
 

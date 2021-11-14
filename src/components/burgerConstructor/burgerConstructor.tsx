@@ -3,7 +3,7 @@ import burgerConstructorStyles from './burgerConstructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal'; 
 import OrderDetails from '../orderDetails/orderDetails';
-import { getNumberOrder } from '../../services/middleware/burger';
+import { getNumberOrder } from '../../services/actions/burger';
 import { useSelector, useDispatch } from 'react-redux';
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { 

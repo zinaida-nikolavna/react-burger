@@ -1,7 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserInfo } from '../services/middleware/auth';
+import { getUserInfo } from '../services/actions/auth';
 import { RouteProps } from 'react-router';
 
 export function ProtectedRoute({ children, ...rest }: RouteProps): React.ReactElement {

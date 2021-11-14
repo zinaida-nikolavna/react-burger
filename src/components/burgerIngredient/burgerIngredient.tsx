@@ -3,7 +3,7 @@ import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
 import {useRef} from 'react';
 import { useDispatch } from 'react-redux';
 import burgerIngredientStyles from './burgerIngredient.module.css';
-import { moveCard } from '../../services/store/burger.ts';
+import { moveCard } from '../../services/store/burger';
 import { TIngredient } from '../../utils/types'; 
 
 type TBurgerIngredientProps = {

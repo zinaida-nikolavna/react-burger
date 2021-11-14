@@ -10,7 +10,7 @@ import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useDispatch } from 'react-redux';
 import { NotFound404 } from '../../pages/NotFound404';
-import { getBurgerIngredients } from '../../services/middleware/burger';
+import { getBurgerIngredients } from '../../services/actions/burger';
 import AppHeader from '../../components/header/header';
 import {Location} from 'history';
 import Modal from '../../components/modal/modal';

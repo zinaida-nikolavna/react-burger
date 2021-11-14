@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './login.module.css';
 import { Link, Redirect } from 'react-router-dom';
-import { registerNewUser } from '../services/middleware/auth';
+import { registerNewUser } from '../services/actions/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { getCookie } from '../utils/utils';
 import { TForm, submitCallback } from '../utils/types';

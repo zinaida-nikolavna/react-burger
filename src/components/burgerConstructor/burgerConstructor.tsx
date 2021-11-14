@@ -14,7 +14,7 @@ import {
   decreasePrice } from '../../services/store/burger';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
 import { getCookie } from '../../utils/utils';
-import { TIngredient } from '../../utils/types';  
+import { TIngredient, TIngredients } from '../../utils/types';  
 import { useHistory } from "react-router-dom";
 
 type TItem = {
@@ -88,11 +88,11 @@ function BurgerConstructor(): React.ReactElement {
       if (getCookie('refreshToken')) {
         // если булочки нет, то запрос на сервер не отправляется
         if (bun) {
-          const ingredients = ingredientsData.map((item) => {
+          const ingredients = ingredientsData.map((item: TIngredient) => {
             return item._id
           });
           setisWithoutBun(false);
-          dispatch(getNumberOrder(ingredients));
+          dispatch(getNumberOrder(ingredients as unknown as TIngredients[]));
         } else {
           setisWithoutBun(true);
         }

@@ -7,7 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './services/store/index';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   devTools: process.env.NODE_ENV !== 'production',
 });

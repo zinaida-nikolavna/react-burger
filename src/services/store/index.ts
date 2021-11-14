@@ -6,4 +6,3 @@ export const rootReducer = combineReducers({
     burger: burgerIngredientsReducer.reducer,
     auth: authReducer
   });
-  

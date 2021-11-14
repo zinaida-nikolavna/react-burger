@@ -30,7 +30,6 @@ type THistory = {
 function App(): React.ReactElement {
   let location = useLocation<TLocataionState>();
   let history = useHistory<THistory>();
-  let background = location.state && location.state.background;
   const action = history.action ==='PUSH' || history.action ==='REPLACE';
   const modalIngredientOpen = action && location.state && location.state.background;
 

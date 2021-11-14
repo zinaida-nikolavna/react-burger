@@ -3,7 +3,7 @@ import Modal from '../modal/modal';
 import TabBurger from '../tabBurger/tabBurger';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useSelector, useDispatch } from 'react-redux';
-import { closeIngredient } from '../../services/store/burger';
+import { closeIngredient } from '../../services/store/burger.ts';
 import {useEffect, useRef} from 'react';
 
 /**

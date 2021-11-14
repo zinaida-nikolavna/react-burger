@@ -1,8 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+type TPayload = {
+    email: string; 
+    name: string;
+}
 
 const authReducer = createSlice({
     name: 'auth',
-    initialState: {
+    initialState:  {
         emailUser: '',
         nameUser: '',
         registerRequest: false,
@@ -22,11 +27,10 @@ const authReducer = createSlice({
         registerRequest: (state) => {
             state.registerRequest = true;
         },
-        registerSuccess: (state, action) => {
+        registerSuccess: (state, action: PayloadAction<TPayload>) => {
             state.registerFailed = false;
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
-            state.passwordUser = action.payload.password;
             state.registerRequest = false;
             state.isLogged = true;
         },
@@ -58,7 +62,7 @@ const authReducer = createSlice({
             state.resetPasswordFailed = true;
             state.resetPasswordRequest = false;
         },
-        authSuccess: (state, action) => {
+        authSuccess: (state, action: PayloadAction<TPayload>) => {
             state.authFailed = false;
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
@@ -67,7 +71,7 @@ const authReducer = createSlice({
         authFailed: (state) => {
             state.authFailed = true;
         },
-        userInfoSuccess: (state, action) => {
+        userInfoSuccess: (state, action: PayloadAction<TPayload>) => {
             state.emailUser = action.payload.email;
             state.nameUser = action.payload.name;
             state.isLogged = true;

@@ -8,7 +8,7 @@ import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
 import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import { NotFound404 } from '../../pages/NotFound404';
 import { getBurgerIngredients } from '../../services/actions/burger';
 import AppHeader from '../../components/header/header';

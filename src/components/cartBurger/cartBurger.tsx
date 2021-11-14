@@ -1,6 +1,6 @@
 import cartBurgerStyles from './cartBurger.module.css';
 import {CurrencyIcon, Counter} from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { useDrag } from "react-dnd";
 import { TIngredient } from '../../utils/types';
 import { Link, useLocation } from "react-router-dom";
@@ -17,7 +17,7 @@ type TCartBurgerProps = {
  */
 function CartBurger({data}: TCartBurgerProps): React.ReactElement {
     let location = useLocation<Location>();
-    const counter = useSelector((state: any) => state.burger.counter);
+    const counter = useSelector(state => state.burger.counter);
     const id = data._id;
     const type = data.type;
     const [{isDragging}, dragRef] = useDrag({

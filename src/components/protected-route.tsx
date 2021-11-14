@@ -1,6 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { getUserInfo } from '../services/actions/auth';
 import { RouteProps } from 'react-router';
 
@@ -18,7 +18,7 @@ export function ProtectedRoute({ children, ...rest }: RouteProps): React.ReactEl
         init();
     }, []);
 
-    const {isLogged} = useSelector((state: any) => state.auth);
+    const {isLogged} = useSelector(state => state.auth);
 
     if (!isUserLoaded) {
         return <></>;

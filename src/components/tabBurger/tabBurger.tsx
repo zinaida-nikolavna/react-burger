@@ -1,6 +1,6 @@
 import tabBurgerStyles from './tabBurger.module.css';
 import CartBurger from '../cartBurger/cartBurger';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { TIngredient } from '../../utils/types';
 
 type TTabBurgerProps = {
@@ -14,7 +14,7 @@ type TTabBurgerProps = {
  * @param title - заголовок вкладки
  */
 function TabBurger({type, title}: TTabBurgerProps): React.ReactElement {
-    const burgerData: TIngredient[] = useSelector((state: any) => state.burger.items);
+    const burgerData: TIngredient[] = useSelector(state => state.burger.items);
     const filterItems = burgerData.filter((item: TIngredient) => item.type === type);
     return (
         <div>

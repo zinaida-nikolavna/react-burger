@@ -1,8 +1,8 @@
-import { useState, useCallback, SyntheticEvent, BaseSyntheticEvent } from 'react';
+import { useState, useCallback } from 'react';
 import {Button, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import style from './login.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { checkEmailExist } from '../services/actions/auth';
 import { getCookie } from '../utils/utils';
 import { submitCallback } from '../utils/types';
@@ -13,7 +13,7 @@ import { submitCallback } from '../utils/types';
 function ForgotPasswordPage(): React.ReactElement {
     const [email, setEmail] = useState<string>('');
     const dispatch = useDispatch();
-    const {checkEmailExistRequest, checkEmailExistFailed, isEmailExist, isLogged} = useSelector((state: any) => state.auth);
+    const {checkEmailExistRequest, checkEmailExistFailed, isEmailExist, isLogged} = useSelector(state => state.auth);
 
     const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value)

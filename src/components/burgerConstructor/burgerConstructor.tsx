@@ -4,7 +4,7 @@ import {ConstructorElement, Button, CurrencyIcon} from '@ya.praktikum/react-deve
 import Modal from '../modal/modal'; 
 import OrderDetails from '../orderDetails/orderDetails';
 import { getNumberOrder } from '../../services/actions/burger';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { 
   getburgerIngredients, 
@@ -14,16 +14,12 @@ import {
   decreasePrice } from '../../services/store/burger';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
 import { getCookie } from '../../utils/utils';
-import { TIngredient, TIngredients } from '../../utils/types';  
+import { TIngredient } from '../../utils/types';  
 import { useHistory } from "react-router-dom";
 
 type TItem = {
   id: string;
   type: string;
-}
-
-type TIngredientWithKey = TIngredient & {
-  key: string;
 }
 
 /**
@@ -37,10 +33,10 @@ function BurgerConstructor(): React.ReactElement {
     // стейт для проверки с булочкой заказ или нет
     const [isWithoutBun, setisWithoutBun] = useState<boolean>(false);
     // получаем итемы в конструкторе
-    const ingredientsData: TIngredientWithKey[] = useSelector((state: any) => state.burger.burgerIngredients);
+    const ingredientsData = useSelector(state => state.burger.burgerIngredients);
 
     const dispatch = useDispatch();
-    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector((state: any) => state.burger);
+    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
     const history = useHistory();
     // завершение перемещения по dnd
     const [{ isHover }, dropRef] = useDrop({
@@ -92,7 +88,7 @@ function BurgerConstructor(): React.ReactElement {
             return item._id
           });
           setisWithoutBun(false);
-          dispatch(getNumberOrder(ingredients as unknown as TIngredients[]));
+          dispatch(getNumberOrder(ingredients));
         } else {
           setisWithoutBun(true);
         }

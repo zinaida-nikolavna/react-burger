@@ -1,10 +1,6 @@
 import {getCookie} from './utils';
 import {TIngredient, TForm} from './types';
 
-type TIngredients = {
-  _id: Pick<TIngredient, '_id'>
-}
-
 type TUser = {
   email: string;
   name: string;
@@ -62,7 +58,7 @@ export  const fetchData = async():Promise<TIngredientServer> => {
 }
 
 // получение номера заказа
-export  const postData = async(ingredients: TIngredients[]):Promise<TOrderNumber> => {
+export  const postData = async(ingredients: string[]):Promise<TOrderNumber> => {
     return await fetch(POST_ENDPOINT, {
         method: 'POST',
         headers: {

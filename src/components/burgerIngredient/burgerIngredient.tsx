@@ -1,14 +1,14 @@
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrop, useDrag, DropTargetMonitor } from "react-dnd";
 import {useRef} from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import burgerIngredientStyles from './burgerIngredient.module.css';
 import { moveCard } from '../../services/store/burger';
 import { TIngredient } from '../../utils/types'; 
 
 type TBurgerIngredientProps = {
     ingredient: TIngredient;
-    id: string;
+    id?: string;
     index: number;
     deleteIngredient: (item: TIngredient, index: number) => void;
 }

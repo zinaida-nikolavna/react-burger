@@ -3,7 +3,7 @@ import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import style from './login.module.css';
 import { authUser } from '../services/actions/auth';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { getCookie } from '../utils/utils';
 import {Location} from 'history';
 import { TForm, submitCallback } from '../utils/types';
@@ -26,7 +26,7 @@ function LoginPage(): React.ReactElement {
     const location = useLocation<LocationState>();
     const {state} = location;
 
-    const isLogged = useSelector((state: any) => state.auth.isLogged);
+    const isLogged = useSelector(state => state.auth.isLogged);
 
     const login = useCallback<submitCallback>(
         e => {

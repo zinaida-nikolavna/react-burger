@@ -17,10 +17,6 @@ export type TIngredient = {
   __v: number;
  };
 
-export type TIngredients = {
-  _id: Pick<TIngredient, '_id'>
-}
-
 export type TForm = {
   email: string;
   password: string;

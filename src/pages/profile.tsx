@@ -4,7 +4,7 @@ import style from './login.module.css';
 import styleProfile from './profile.module.css';
 import { NavLink, Redirect } from 'react-router-dom';
 import { getUserInfo, getRefreshUser, getLogoutRequest} from '../services/actions/auth';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Switch, Route } from 'react-router-dom';
 import { getCookie } from '../utils/utils';
 import { TForm, submitCallback } from '../utils/types';
@@ -16,7 +16,7 @@ export type clickCallback = (e: React.SyntheticEvent) => void;
  */
 function ProfilePage(): React.ReactElement {
     const dispatch = useDispatch();
-    const {emailUser, nameUser, refreshUserFailed, logoutRequestFailed} = useSelector((state: any) => state.auth);
+    const {emailUser, nameUser, refreshUserRequestFailed, logoutRequestFailed} = useSelector(state => state.auth);
     const [activeName, setActiveName] = useState<boolean>(true);
     const [isLogged, setIsLogged] = useState<boolean>(true);
     const [activePassword, setActivePassword] = useState<boolean>(true);
@@ -90,7 +90,7 @@ function ProfilePage(): React.ReactElement {
                 <div className={styleProfile.detail}>
                 <Switch>
                     <Route path='/profile' exact={true}>
-                        {!refreshUserFailed && <div className={styleProfile.form}>   
+                        {!refreshUserRequestFailed && <div className={styleProfile.form}>   
                             <form className={style.form} onSubmit={save}>
                                 <span className='mb-6'>
                                     <Input
@@ -128,7 +128,7 @@ function ProfilePage(): React.ReactElement {
                                 </div>
                             </form>
                         </div>}
-                        {refreshUserFailed && 
+                        {refreshUserRequestFailed && 
                         <>
                             <div className='text text_type_main-medium'>Обновление пользовательских данных не удалось</div>
                             <div className='text text_type_main-medium'>Обновите страницу</div>

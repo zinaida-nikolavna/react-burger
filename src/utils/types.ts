@@ -1,7 +1,3 @@
-import { store } from '../index';
-import { ThunkAction } from 'redux-thunk';
-import { ActionCreator, AnyAction } from 'redux';
-
 export type TIngredient = {
   _id: string;
   name: string;
@@ -25,9 +21,19 @@ export type TForm = {
 
 export type submitCallback = (e: React.FormEvent<HTMLFormElement>) => void;
 
-export type AppDispatch = typeof store.dispatch; 
+export type TOrder = {
+  ingredients: string[];
+  _id: string;
+  status: 'status' | 'pending' | 'done';
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+}
 
-export type RootState = ReturnType<typeof store.getState>;
-
-export type AppThunk<ReturnType = void> = ActionCreator<
-ThunkAction<ReturnType, RootState, unknown, AnyAction>>;
+export type TOrderResponse = {
+  success: boolean;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
+}

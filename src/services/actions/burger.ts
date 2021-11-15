@@ -8,7 +8,7 @@ import {
 } from '../store/burger';
 import {fetchData} from '../../utils/src';
 import {postData} from '../../utils/src';
-import { AppDispatch, AppThunk } from '../../utils/types'; 
+import { AppDispatch, AppThunk } from '../store'; 
 
 // получаем все доступные ингредиенты для бургеров
 export const getBurgerIngredients: AppThunk = () => (dispatch: AppDispatch) => {

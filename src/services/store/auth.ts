@@ -5,7 +5,7 @@ type TPayload = {
     name: string;
 }
 
-const authReducer = createSlice({
+const authSlice = createSlice({
     name: 'auth',
     initialState:  {
         emailUser: '',
@@ -110,6 +110,6 @@ export const {
     userInfoFailed,
     refreshUserFailed,
     logoutRequestFailed
-} = authReducer.actions;
+} = authSlice.actions;
 
-export default authReducer.reducer;
+export default authSlice.reducer;

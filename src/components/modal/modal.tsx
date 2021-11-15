@@ -6,7 +6,7 @@ import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 
 export type TModalProps = {
     onModalClose: () => void;
-    title: string;
+    title?: string;
     isOpened: boolean;
     children: React.ReactElement;
 }

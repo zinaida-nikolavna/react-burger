@@ -1,0 +1,38 @@
+.container {
+    background: #1C1C21;
+    width: 584px;
+    height: 214px;
+    border-radius: 40px;
+    box-sizing: border-box;
+}
+
+.first_line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flexbox {
+    display: flex;
+}
+
+.ingredient {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid #801AB2;
+    /*border-image: linear-gradient(#801AB2, #4C4CFF);
+    border-image-slice: 1;*/
+}
+
+.name {
+    height: 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.link {
+    color: inherit;
+}

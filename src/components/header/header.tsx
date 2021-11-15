@@ -12,6 +12,7 @@ function AppHeader(): React.ReactElement {
     const { url } = useRouteMatch<{url: string}>();
     const constructor = '/';
     const profile = '/profile';
+    const feed = '/feed';
     
     return (
         <header className={`${headerStyles.header} pt-4 pb-4`}>
@@ -20,10 +21,10 @@ function AppHeader(): React.ReactElement {
                     <BurgerIcon type={location?.pathname === constructor ? 'primary' : 'secondary'}/>
                     <p className={location?.pathname === constructor ? `${headerStyles.active} ml-2` : 'ml-2 text_color_inactive' }>Конструктор</p>
                 </Link>
-                <div className={`${headerStyles.item} pt-4 pb-4 pl-5 pr-5`}>
-                    <ListIcon type='secondary'/>
-                    <p className='ml-2 text text_type_main-default text_color_inactive'>Лента заказов</p>
-                </div>
+                <Link to='/feed' className={`${headerStyles.item} pt-4 pb-4 pl-5 pr-5`}>
+                    <ListIcon type={url === feed ? 'primary' : 'secondary'}/>
+                    <p className={url === feed ? `${headerStyles.active} 'ml-2 text text_type_main-default` : 'ml-2 text text_type_main-default text_color_inactive' }>Лента заказов</p>
+                </Link>
             </div>
             <Logo />
             <Link to='/profile' className={`${headerStyles.item} pt-4 pb-4 pl-5 pr-5`}>

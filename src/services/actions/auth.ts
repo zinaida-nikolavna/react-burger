@@ -25,7 +25,8 @@ import {
     refreshUserFailed,
     logoutRequestFailed
 } from '../store/auth';
-import { TForm, AppDispatch, AppThunk } from '../../utils/types'; 
+import { TForm } from '../../utils/types'; 
+import {  AppDispatch, AppThunk  } from '../store';
 
 
 // регистрируем нового пользователя

@@ -28,7 +28,7 @@ const initialState: TState = {
     price: 0 // цена заказа
 }
 
-export const burgerIngredientsReducer = createSlice({
+export const burgerIngredientsSlice = createSlice({
     name: 'burger',
     initialState,
     reducers: {
@@ -133,4 +133,6 @@ export const {
     increasePrice,
     decreasePrice,
     moveCard
-} = burgerIngredientsReducer.actions;
+} = burgerIngredientsSlice.actions;
+
+export default burgerIngredientsSlice.reducer;

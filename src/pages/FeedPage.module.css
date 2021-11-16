@@ -8,7 +8,7 @@
 
 .container {
     height: 700px;
-    overflow: scroll; 
+    overflow: auto; 
     overflow-x: hidden;
 }
 

@@ -1,11 +1,12 @@
 import { useSelector, useDispatch } from '../../services/hooks';
 import style from './orderCardDetails.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getDateTime } from '../../utils/utils';
-import {TOrder, TIngredient} from '../../utils/types';
+import {TOrder, TIngredientWithKey} from '../../utils/types';
 import { useParams } from 'react-router-dom';
 import {connect, disconnect} from '../../services/store/orderList/actions';
+import { v4 as uuidv4 } from 'uuid';
 
 type TOrderCardDetailsProps = {
     isModal?: boolean;
@@ -31,38 +32,20 @@ function OrderCardDetails({isModal}: TOrderCardDetailsProps): React.ReactElement
         }
     }, [dispatch]);
 
-    let orderIngredientsWithSum: {id: string, sum: number} | {} = {};
-
     // получаем заказ по id
     const order: TOrder | undefined = dataOrders ? dataOrders.orders.find((item: TOrder) => item._id === id) : undefined;
         
     // получаем массив ингредиентов
-    const orderIngredients: TIngredient[] = [];
+    const orderIngredients: TIngredientWithKey[] = [];
     if (order) {
         for (let orderIngredient of order.ingredients) {
             burgerData.forEach((item) => {
                 if (item._id === orderIngredient) {
-                    orderIngredients.push(item);
+                    orderIngredients.push({...item, key: uuidv4()});
                 }
             })
         }
     }
-                
-    
-    const getCountIds = () => {
-        if (orderIngredients) {
-            const result: {[key: string]: number} = {};
-  
-            orderIngredients.forEach((item: TIngredient) => result[item._id] ? result[item._id]++ : result[item._id] = 1);
-  
-        return Object.keys(result).map(item => {
-  	        return {
-    	        id: item,
-                sum: result[item]
-            }
-        })
-        }
-    };
 
     // высчитываем стоимость
     let price;
@@ -87,7 +70,7 @@ function OrderCardDetails({isModal}: TOrderCardDetailsProps): React.ReactElement
             <p className='text text_type_main-medium mt-15'>Состав:</p>
             <div className={`${style.ingredient} mt-4`}>
             {orderIngredients.map((item) => (
-                   <div key={item._id} className={`${style.item} mt-4 mr-4`} >
+                   <div key={item.key} className={`${style.item} mt-4 mr-4`} >
                        <div className={style.flexbox}> 
                             <div className={style.border}>
                                 <div style={{
@@ -103,7 +86,7 @@ function OrderCardDetails({isModal}: TOrderCardDetailsProps): React.ReactElement
                             <p className="text text_type_main-default ml-4">{item.name}</p> 
                         </div>
                         <div className={style.flexbox}>
-                            <p className='mr-2 text text_type_digits-default'>{item.price}&times;{item.price}</p>
+                            <p className='mr-2 text text_type_digits-default'>{item.type === 'bun' ? '2' : '1'}&times;{item.price}</p>
                             <CurrencyIcon type="primary" />
                         </div>
                    </div>                                      

@@ -11,7 +11,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderCardDetails from '../orderCardDetails/orderCardDetails';
 import { useDispatch } from '../../services/hooks';
 import { NotFound404 } from '../../pages/NotFound404';
-import OrdersList from '../../pages/OrdersList';
+import FeedPage from '../../pages/FeedPage';
 import { getBurgerIngredients } from '../../services/actions/burger';
 import AppHeader from '../../components/header/header';
 import {Location} from 'history';
@@ -64,7 +64,7 @@ function App(): React.ReactElement {
             <ResetPasswordPage />
           </Route>
           <Route path="/feed" exact>
-            <OrdersList />
+            <FeedPage />
           </Route>
           <Route path="/ingredients/:id" exact>
               <IngredientDetails />
@@ -72,8 +72,11 @@ function App(): React.ReactElement {
           <Route path="/feed/:id" exact>
               <OrderCardDetails />
           </Route>
-          <ProtectedRoute path={'/profile'}>
+          <ProtectedRoute path={['/profile', '/profile/orders']} exact>
             <ProfilePage />
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile/orders/:id" exact>
+              <OrderCardDetails />
           </ProtectedRoute>
           <Route>
             <NotFound404 />
@@ -88,7 +91,12 @@ function App(): React.ReactElement {
             <Modal isOpened={true} onModalClose={() => back()}>
                 <OrderCardDetails isModal={true}/>
             </Modal>
-          </Route>)}          
+          </Route>)}
+        {!!modalIngredientOpen && (<Route path='/profile/orders/:id'>
+            <Modal isOpened={true} onModalClose={() => back()}>
+                <OrderCardDetails isModal={true}/>
+            </Modal>
+          </Route>)}           
       </>
     );
 }

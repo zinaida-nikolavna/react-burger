@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from '../services/hooks';
 import { Switch, Route } from 'react-router-dom';
 import { getCookie } from '../utils/utils';
 import { TForm, submitCallback } from '../utils/types';
+import UserOrdersList from '../components/userOrdersList/userOrdersList';
 
 export type clickCallback = (e: React.SyntheticEvent) => void;
 
@@ -136,7 +137,7 @@ function ProfilePage(): React.ReactElement {
                         }    
                     </Route>
                     <Route path='/profile/orders' exact={true}>
-                        <div className='text text_type_main-medium text_color_inactive'>Здесь будет история заказов</div>
+                        <UserOrdersList />
                     </Route>    
                 </Switch>
                 </div>

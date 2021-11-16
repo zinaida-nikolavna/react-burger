@@ -43,7 +43,7 @@ function OrderCard({orderData}: TOrderCardProps): React.ReactElement {
     return(
         <Link className={style.link}
               to={{
-              pathname: `/feed/${orderData._id}`,
+              pathname: `${location.pathname}/${orderData._id}`,
               state: { background: location },
               }}>
         <div className={`${style.container} pt-6 pr-6 pl-6 pb-6 mt-4 mr-2`}>

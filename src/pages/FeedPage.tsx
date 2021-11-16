@@ -1,6 +1,6 @@
 import {useEffect } from 'react';
 import { useSelector, useDispatch } from '../services/hooks';
-import styleOrder from './OrdersList.module.css';
+import styleOrder from './FeedPage.module.css';
 import OrderCard from '../components/orderCard/orderCard';
 import {connect, disconnect} from '../services/store/orderList/actions';
 import {TOrder} from '../utils/types';
@@ -8,7 +8,7 @@ import {TOrder} from '../utils/types';
 /**
  * Лента заказов
  */
-function OrdersList(): React.ReactElement {
+function FeedPage(): React.ReactElement {
     const dispatch = useDispatch();
     useEffect(()=> {
       dispatch(connect('wss://norma.nomoreparties.space/orders/all'));
@@ -23,14 +23,14 @@ function OrdersList(): React.ReactElement {
     const dataOrdersInWork: number[] = [];
 
     if (dataOrders) {
-    dataOrders.orders.forEach((item: TOrder) => {
-        if (item.status === 'done') {
-            dataOrdersDone.push(item.number);
-        } else {
+        dataOrders.orders.forEach((item: TOrder) => {
+            if (item.status === 'done') {
+                dataOrdersDone.push(item.number);
+            } else {
             dataOrdersInWork.push(item.number);
-        }
-    });
-}
+            }
+        });
+    }
 
     const styles = {
         height: window.innerHeight,
@@ -81,4 +81,4 @@ function OrdersList(): React.ReactElement {
 }
 
 
-export default OrdersList;
+export default FeedPage;

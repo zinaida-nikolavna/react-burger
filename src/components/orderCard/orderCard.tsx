@@ -2,14 +2,16 @@ import style from './orderCard.module.css';
 import { getDateTime } from '../../utils/utils';
 import { useSelector } from '../../services/hooks';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import {TOrder, TIngredient} from '../../utils/types';
+import {TOrder, TIngredientWithKey} from '../../utils/types';
 import { Link, useLocation } from "react-router-dom";
 import {Location} from 'history';
+import { v4 as uuidv4 } from 'uuid';
 
 type TOrderCardProps = {
     orderData: TOrder,
     key: number
 }
+
 
 /**
  * Карточка заказа в реестре
@@ -18,13 +20,13 @@ type TOrderCardProps = {
 function OrderCard({orderData}: TOrderCardProps): React.ReactElement {
     let location = useLocation<Location>();
     const burgerData = useSelector(state => state.burger.items);
-    const orderIngredients: TIngredient[] = [];
+    const orderIngredients: TIngredientWithKey[] = [];
 
     // получаем данные об ингредиентах
     for (let orderIngredient of orderData.ingredients) {
         burgerData.forEach((item) => {
             if (item._id === orderIngredient) {
-                orderIngredients.push(item);
+                orderIngredients.push({...item, key: uuidv4()});
             }
         })
     }
@@ -55,7 +57,7 @@ function OrderCard({orderData}: TOrderCardProps): React.ReactElement {
             <div className={`${style.first_line} pt-6`}>
                 <div className={style.flexbox}>
                     {orderIngredients.map((item, index) => (
-                        <div key={item._id} className={style.ingredient} 
+                        <div key={item.key} className={style.ingredient} 
                              style={{
                                  position: 'relative',
                                  backgroundImage: `url(${item.image_mobile})`, 

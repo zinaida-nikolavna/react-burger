@@ -13,6 +13,8 @@ export type TIngredient = {
   __v: number;
  };
 
+export type TIngredientWithKey = TIngredient & {key?: string};
+
 export type TForm = {
   email: string;
   password: string;

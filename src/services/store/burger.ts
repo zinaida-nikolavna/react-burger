@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
-import { TIngredient } from '../../utils/types';  
-
-type TBurgerIngredient = TIngredient & {key?: string}
+import { TIngredient, TIngredientWithKey } from '../../utils/types';  
 
 type TState = {
     items: Array<TIngredient>;
@@ -11,7 +9,7 @@ type TState = {
     orderNumberRequest: boolean;
     orderNumber: number;
     orderNumberFailed: boolean;
-    burgerIngredients: Array<TBurgerIngredient>;
+    burgerIngredients: Array<TIngredientWithKey>;
     counter: {[key: string]: number}; 
     price: number;
 }
@@ -64,7 +62,7 @@ export const burgerIngredientsSlice = createSlice({
         },
         // ингредиенты, помещенные пользователем в конструктор
         getburgerIngredients: (state, action: PayloadAction<string>) => {
-            const item: TBurgerIngredient | undefined = state.items.find((element: TIngredient) => element._id === action.payload);
+            const item: TIngredientWithKey | undefined = state.items.find((element: TIngredient) => element._id === action.payload);
             if (item) {
                     item.key = uuidv4();
                     state.burgerIngredients.push(item);

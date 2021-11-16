@@ -35,6 +35,8 @@ function OrderCard({orderData}: TOrderCardProps): React.ReactElement {
     const price = orderIngredients.reduce((previousValue, currentValue) => {
         return previousValue + currentValue.price;
     }, 0);
+
+    const orderIngredientsForImage = orderIngredients.slice(0, 6);
     
     if (!orderData) {
         return(
@@ -56,7 +58,7 @@ function OrderCard({orderData}: TOrderCardProps): React.ReactElement {
             <div title={orderData.name} className={`${style.name} text text_type_main-medium pt-6`}>{orderData.name}</div>
             <div className={`${style.first_line} pt-6`}>
                 <div className={style.flexbox}>
-                    {orderIngredients.map((item, index) => (
+                    {orderIngredientsForImage.map((item, index) => (
                         <div key={item.key} className={style.ingredient} 
                              style={{
                                  position: 'relative',

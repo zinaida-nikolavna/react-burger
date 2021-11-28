@@ -1,7 +1,7 @@
 import BurgerIngredients from '../components/burgerIngredients/burgerIngredients';
 import BurgerConstructor from '../components/burgerConstructor/burgerConstructor';
 import style from './mainPage.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../services/hooks';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -9,7 +9,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
  * Главная страница
  */
 function MainPage(): React.ReactElement {
-  const { itemsFailed, itemsRequest, items } = useSelector((state: any) => state.burger);
+  const { itemsFailed, itemsRequest, items } = useSelector(state => state.burger);
 
   const styles = {
     height: window.innerHeight,

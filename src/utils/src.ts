@@ -1,10 +1,6 @@
 import {getCookie} from './utils';
 import {TIngredient, TForm} from './types';
 
-type TIngredients = {
-  _id: Pick<TIngredient, '_id'>
-}
-
 type TUser = {
   email: string;
   name: string;
@@ -31,6 +27,14 @@ type TServerResponse = {
   message: string;
 }
 
+type TOrderNumber = TServerResponse & {
+  order: {number: number}
+}
+
+type TIngredientServer = TServerResponse & {
+  data: TIngredient[];
+}
+
 const API_URL = 'https://norma.nomoreparties.space/api';
 
 const FETCH_URL = `${API_URL}/ingredients`;
@@ -48,23 +52,24 @@ const getResponse = <T>(res: Response): Promise<T> => {
 }
 
 // запрос за данными на сервер для списка доступных игредиентов бургера
-export  const fetchData = async():Promise<TIngredient[]> => {
+export  const fetchData = async():Promise<TIngredientServer> => {
     return await fetch(FETCH_URL)
-    .then(res => getResponse<TIngredient[]>(res));
+    .then(res => getResponse<TIngredientServer>(res));
 }
 
 // получение номера заказа
-export  const postData = async(ingredients: TIngredients[]):Promise<number> => {
+export  const postData = async(ingredients: string[]):Promise<TOrderNumber> => {
     return await fetch(POST_ENDPOINT, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + getCookie('token')
         },
         body: JSON.stringify({
           ingredients
         })
       })
-      .then(res => getResponse<number>(res));
+      .then(res => getResponse<TOrderNumber>(res));
 }
 
 // регистрация

@@ -25,16 +25,19 @@ import {
     refreshUserFailed,
     logoutRequestFailed
 } from '../store/auth';
+import { TForm } from '../../utils/types'; 
+import {  AppDispatch, AppThunk  } from '../store';
+
 
 // регистрируем нового пользователя
-export const registerNewUser = (form) => (dispatch) => {
+export const registerNewUser: AppThunk = (form: TForm) => (dispatch: AppDispatch) => {
     dispatch(registerRequest());
     return registerUser(form)
            .then(res => {
                 if (res && res.success) {
                     setCookie('token', res.accessToken.split('Bearer ')[1]);
                     setCookie('refreshToken', res.refreshToken);
-                    dispatch(registerSuccess({email: res.user.email, name: res.user.name, password: form.password, token: res.accessToken.split('Bearer ')[1]}));
+                    dispatch(registerSuccess({email: res.user.email, name: res.user.name}));
                 } else {
                     dispatch(registerFailed());
               }
@@ -45,7 +48,7 @@ export const registerNewUser = (form) => (dispatch) => {
 };
 
 // проверка на наличие существующего email
-export const checkEmailExist = (email) => (dispatch) => {
+export const checkEmailExist: AppThunk = (email: string) => (dispatch: AppDispatch) => {
     dispatch(checkEmailRequest());
     return emailExist(email)
            .then(res => {
@@ -61,7 +64,7 @@ export const checkEmailExist = (email) => (dispatch) => {
 };
 
 // сброс пароля
-export const resetOldPassword = (form) => (dispatch) => {
+export const resetOldPassword: AppThunk = (form: TForm) => (dispatch: AppDispatch) => {
     dispatch(resetPasswordRequest());
     return resetPassword(form)
            .then(res => {
@@ -77,13 +80,13 @@ export const resetOldPassword = (form) => (dispatch) => {
 };
 
 // авторизация
-export const authUser = (form) => (dispatch) => {
+export const authUser: AppThunk = (form: TForm) => (dispatch: AppDispatch) => {
     return authorization(form)
            .then(res => {
                 if (res && res.success) {
                     setCookie('token', res.accessToken.split('Bearer ')[1]);
                     setCookie('refreshToken', res.refreshToken);
-                    dispatch(authSuccess({email: res.user.email, name: res.user.name, password: form.password, token: res.accessToken.split('Bearer ')[1]}));
+                    dispatch(authSuccess({email: res.user.email, name: res.user.name}));
                 } else {
                     dispatch(authFailed());
               }
@@ -94,7 +97,7 @@ export const authUser = (form) => (dispatch) => {
 };
 
 // запрос данных о пользователе
-export const getUserInfo = () => (dispatch) => {
+export const getUserInfo: AppThunk = () => (dispatch: AppDispatch) => {
         return getUserRequest()
             .then(res => {
                     if (res && res.success) {
@@ -121,7 +124,7 @@ export const getUserInfo = () => (dispatch) => {
 };
 
 // обновление пользователя
-export const getRefreshUser = (form) => (dispatch) => {
+export const getRefreshUser: AppThunk = (form: TForm) => (dispatch: AppDispatch) => {
     return refreshUser(form)
         .then(res => {
             if (res && res.success) {
@@ -148,7 +151,7 @@ export const getRefreshUser = (form) => (dispatch) => {
 };
 
 // разлогин
-export const getLogoutRequest = () => (dispatch) => {
+export const getLogoutRequest: AppThunk = () => (dispatch: AppDispatch) => {
     return logoutRequest()
            .then(res => {
                 if (res && res.success) {

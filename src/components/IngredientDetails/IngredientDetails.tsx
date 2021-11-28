@@ -1,6 +1,6 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { useParams } from 'react-router-dom';
 import { TIngredient } from '../../utils/types'; 
 
@@ -33,7 +33,7 @@ const Items: React.FC<TItems> = ({title, characteristic}) => {
  */
 function IngredientDetails({isModal}: TIngredientDetailsProps): React.ReactElement {
     const [ingredient, setIngredient] = useState<TIngredient>();
-    const { itemsFailed, itemsRequest, items } = useSelector((state: any) => state.burger);
+    const { itemsFailed, itemsRequest, items } = useSelector(state => state.burger);
     const { id } = useParams<{id: string}>();
     
     useEffect(

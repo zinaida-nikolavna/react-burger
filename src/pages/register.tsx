@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import {Button, PasswordInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './login.module.css';
 import { Link, Redirect } from 'react-router-dom';
-import { registerNewUser } from '../services/middleware/auth';
-import { useSelector, useDispatch } from 'react-redux';
+import { registerNewUser } from '../services/actions/auth';
+import { useSelector, useDispatch } from '../services/hooks';
 import { getCookie } from '../utils/utils';
 import { TForm, submitCallback } from '../utils/types';
 
@@ -16,7 +16,7 @@ function RegisterPage(): React.ReactElement {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const {nameUser, registerRequest, registerFailed} = useSelector((state: any) => state.auth);
+    const {nameUser, registerRequest, registerFailed} = useSelector(state => state.auth);
 
     const register = useCallback<submitCallback>(
         e => {

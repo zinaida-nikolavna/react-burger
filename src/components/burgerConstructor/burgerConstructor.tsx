@@ -3,8 +3,8 @@ import burgerConstructorStyles from './burgerConstructor.module.css';
 import {ConstructorElement, Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal'; 
 import OrderDetails from '../orderDetails/orderDetails';
-import { getNumberOrder } from '../../services/middleware/burger';
-import { useSelector, useDispatch } from 'react-redux';
+import { getNumberOrder } from '../../services/actions/burger';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { DropTargetMonitor, useDrop } from "react-dnd";
 import { 
   getburgerIngredients, 
@@ -22,10 +22,6 @@ type TItem = {
   type: string;
 }
 
-type TIngredientWithKey = TIngredient & {
-  key: string;
-}
-
 /**
  * Реестр конструктора бургера
  */
@@ -37,10 +33,10 @@ function BurgerConstructor(): React.ReactElement {
     // стейт для проверки с булочкой заказ или нет
     const [isWithoutBun, setisWithoutBun] = useState<boolean>(false);
     // получаем итемы в конструкторе
-    const ingredientsData: TIngredientWithKey[] = useSelector((state: any) => state.burger.burgerIngredients);
+    const ingredientsData = useSelector(state => state.burger.burgerIngredients);
 
     const dispatch = useDispatch();
-    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector((state: any) => state.burger);
+    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
     const history = useHistory();
     // завершение перемещения по dnd
     const [{ isHover }, dropRef] = useDrop({
@@ -88,7 +84,7 @@ function BurgerConstructor(): React.ReactElement {
       if (getCookie('refreshToken')) {
         // если булочки нет, то запрос на сервер не отправляется
         if (bun) {
-          const ingredients = ingredientsData.map((item) => {
+          const ingredients = ingredientsData.map((item: TIngredient) => {
             return item._id
           });
           setisWithoutBun(false);

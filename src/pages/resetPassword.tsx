@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import {Button, Input, PasswordInput} from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect } from 'react-router-dom';
 import style from './login.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { resetOldPassword } from '../services/middleware/auth';
+import { useSelector, useDispatch } from '../services/hooks';
+import { resetOldPassword } from '../services/actions/auth';
 import { getCookie } from '../utils/utils';
 import { submitCallback } from '../utils/types';
 
@@ -21,7 +21,7 @@ function ResetPasswordPage(): React.ReactElement {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
     const dispatch = useDispatch();
-    const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector((state: any) => state.auth);
+    const {resetPasswordSuccess, isLogged, isEmailExist} = useSelector(state => state.auth);
 
     const changePassword = useCallback<submitCallback>(
         e => {

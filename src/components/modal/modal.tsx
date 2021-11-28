@@ -1,12 +1,12 @@
 import ReactDOM from 'react-dom';
-import {useEffect, useCallback, SyntheticEvent} from 'react';
+import {useEffect, useCallback} from 'react';
 import modalStyles from './modal.module.css';
 import ModalOverlay from '../modalOverlay/modalOverlay';
 import { CloseIcon }  from '@ya.praktikum/react-developer-burger-ui-components';
 
 export type TModalProps = {
     onModalClose: () => void;
-    title: string;
+    title?: string;
     isOpened: boolean;
     children: React.ReactElement;
 }

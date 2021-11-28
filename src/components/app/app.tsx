@@ -8,9 +8,11 @@ import ForgotPasswordPage from '../../pages/forgotPassword';
 import ProfilePage from '../../pages/profile';
 import { ProtectedRoute } from '../protected-route';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import { useDispatch } from 'react-redux';
+import OrderCardDetails from '../orderCardDetails/orderCardDetails';
+import { useDispatch } from '../../services/hooks';
 import { NotFound404 } from '../../pages/NotFound404';
-import { getBurgerIngredients } from '../../services/middleware/burger';
+import FeedPage from '../../pages/FeedPage';
+import { getBurgerIngredients } from '../../services/actions/burger';
 import AppHeader from '../../components/header/header';
 import {Location} from 'history';
 import Modal from '../../components/modal/modal';
@@ -30,7 +32,6 @@ type THistory = {
 function App(): React.ReactElement {
   let location = useLocation<TLocataionState>();
   let history = useHistory<THistory>();
-  let background = location.state && location.state.background;
   const action = history.action ==='PUSH' || history.action ==='REPLACE';
   const modalIngredientOpen = action && location.state && location.state.background;
 
@@ -47,7 +48,7 @@ function App(): React.ReactElement {
       <>
         <AppHeader />
         <Switch location={modalIngredientOpen || location}>
-          <Route path="/" exact={true}>
+          <Route path="/" exact>
             <MainPage />
           </Route>
           <Route path="/login">
@@ -62,11 +63,20 @@ function App(): React.ReactElement {
           <Route path="/reset-password">
             <ResetPasswordPage />
           </Route>
-          <Route path="/ingredients/:id" exact={true}>
+          <Route path="/feed" exact>
+            <FeedPage />
+          </Route>
+          <Route path="/ingredients/:id" exact>
               <IngredientDetails />
           </Route>
-          <ProtectedRoute path={'/profile'}>
+          <Route path="/feed/:id" exact>
+              <OrderCardDetails />
+          </Route>
+          <ProtectedRoute path={['/profile', '/profile/orders']} exact>
             <ProfilePage />
+          </ProtectedRoute>
+          <ProtectedRoute path="/profile/orders/:id" exact>
+              <OrderCardDetails />
           </ProtectedRoute>
           <Route>
             <NotFound404 />
@@ -77,6 +87,16 @@ function App(): React.ReactElement {
                 <IngredientDetails isModal={true}/>
             </Modal>
           </Route>)}
+        {!!modalIngredientOpen && (<Route path='/feed/:id'>
+            <Modal isOpened={true} onModalClose={() => back()}>
+                <OrderCardDetails isModal={true}/>
+            </Modal>
+          </Route>)}
+        {!!modalIngredientOpen && (<Route path='/profile/orders/:id'>
+            <Modal isOpened={true} onModalClose={() => back()}>
+                <OrderCardDetails isModal={true}/>
+            </Modal>
+          </Route>)}           
       </>
     );
 }

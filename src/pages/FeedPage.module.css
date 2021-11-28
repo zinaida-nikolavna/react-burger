@@ -1,0 +1,31 @@
+.main {
+    width: 1280px;
+    display: flex;
+    margin: 0 auto;
+    align-items: flex-start;
+}    
+
+
+.container {
+    height: 700px;
+    overflow: auto; 
+    overflow-x: hidden;
+}
+
+.columns {
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    max-width: 290px;
+    flex-wrap: wrap;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+    width: 580px;
+}
+
+.succcess {
+    color: #00CCCC;
+}

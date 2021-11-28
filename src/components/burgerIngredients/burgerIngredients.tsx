@@ -1,16 +1,11 @@
-import burgerIngredientsStyles from './burgerIngredients.module.css';
-import Modal from '../modal/modal';
-import TabBurger from '../tabBurger/tabBurger';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import { useSelector, useDispatch } from 'react-redux';
-import { closeIngredient } from '../../services/store/burger';
 import {useEffect, useRef} from 'react';
+import burgerIngredientsStyles from './burgerIngredients.module.css';
+import TabBurger from '../tabBurger/tabBurger';;
 
 /**
  * реестр ингредиентов
  */
 function BurgerIngredients(): React.ReactElement {
-    const dispatch = useDispatch();
 
     const tabsRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLDivElement>(null);
@@ -39,11 +34,6 @@ function BurgerIngredients(): React.ReactElement {
             (section) => observer.observe(section)
         );
     }, []);
-
-    const onModalClose = (): void => {
-        dispatch(closeIngredient());
-        window.history.pushState({}, '', `http://localhost:3000`);
-    }
 
     return (
         <section>

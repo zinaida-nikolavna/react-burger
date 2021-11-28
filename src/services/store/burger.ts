@@ -1,24 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { TIngredient, TIngredientWithKey } from '../../utils/types';  
 
-export const burgerIngredientsReducer = createSlice({
+type TState = {
+    items: Array<TIngredient>;
+    itemsRequest: boolean;
+    itemsFailed: boolean;
+    orderNumberRequest: boolean;
+    orderNumber: number;
+    orderNumberFailed: boolean;
+    burgerIngredients: Array<TIngredientWithKey>;
+    counter: {[key: string]: number}; 
+    price: number;
+}
+
+const initialState: TState = {
+    items: [], // итемы игредиентов бургера
+    itemsRequest: false,
+    itemsFailed: false,
+    orderNumberRequest: false,
+    orderNumber: 0, // номер заказа
+    orderNumberFailed: false,
+    burgerIngredients: [], // итемы в конструкторе
+    counter: {}, // объект для хранения счетчиков для ингредиентов
+    price: 0 // цена заказа
+}
+
+export const burgerIngredientsSlice = createSlice({
     name: 'burger',
-    initialState: {
-        items: [], // итемы игредиентов бургера
-        itemsRequest: false,
-        itemsFailed: false,
-        orderNumberRequest: false,
-        orderNumber: null, // номер заказа
-        orderNumberFailed: false,
-        burgerIngredients: [], // итемы в конструкторе
-        counter: {}, // объект для хранения счетчиков для ингредиентов
-        price: 0 // цена заказа
-    },
+    initialState,
     reducers: {
         getIngredientsRequest: (state) => {
             state.itemsRequest = true;
         },
-        getIngredientsSuccess: (state, action) => {
+        getIngredientsSuccess: (state, action: PayloadAction<Array<TIngredient>>) => {
             state.itemsFailed = false;
             state.items = action.payload;
             state.itemsRequest = false;
@@ -31,7 +46,7 @@ export const burgerIngredientsReducer = createSlice({
             state.orderNumberRequest = true;
         },
         // получаем номер заказа
-        getNumberOrderSuccess: (state, action) => {
+        getNumberOrderSuccess: (state, action: PayloadAction<number>) => {
             state.orderNumberFailed = false;
             state.orderNumber = action.payload;
             state.orderNumberRequest = false;
@@ -46,21 +61,23 @@ export const burgerIngredientsReducer = createSlice({
             state.orderNumberRequest = false;
         },
         // ингредиенты, помещенные пользователем в конструктор
-        getburgerIngredients: (state, action) => {
-            const item = state.items.find(element => element._id === action.payload);
-            item.key = uuidv4();
-            state.burgerIngredients.push(item);
-            if (item.type === 'bun') {
-                state.price = state.price + item.price * 2;
-            } else {
-                state.price = state.price + item.price;
-            }
+        getburgerIngredients: (state, action: PayloadAction<string>) => {
+            const item: TIngredientWithKey | undefined = state.items.find((element: TIngredient) => element._id === action.payload);
+            if (item) {
+                    item.key = uuidv4();
+                    state.burgerIngredients.push(item);
+                if (item.type === 'bun') {
+                    state.price = state.price + item.price * 2;
+                } else {
+                    state.price = state.price + item.price;
+                }
+            } 
         },
-        deleteBurgerIngredient: (state, action) => {
+        deleteBurgerIngredient: (state, action: PayloadAction<number>) => {
             state.burgerIngredients.splice(action.payload, 1);
         },
         // увеличиваем счетчик
-        increaseCounter: (state, action) => {
+        increaseCounter: (state, action: PayloadAction<{id: keyof typeof state.counter, type: string}>) => {
             // проверяем есть ли такой id ингредиента уже в объекте
             if (action.payload.id in state.counter) {
                 // если да, увеличиваем на один
@@ -76,7 +93,7 @@ export const burgerIngredientsReducer = createSlice({
             }
         },
         // уменьшаем счетчик
-        decreaseCounter: (state, action) => {
+        decreaseCounter: (state, action: PayloadAction<{id: keyof typeof state.counter, type: string}>) => {
             if (action.payload.type === 'bun') {
                 state.counter[action.payload.id] = state.counter[action.payload.id] - 2;
             } else {
@@ -84,15 +101,15 @@ export const burgerIngredientsReducer = createSlice({
             }
         },
         // увеличиваем цену
-        increasePrice: (state, action) => {
+        increasePrice: (state, action: PayloadAction<number>) => {
             state.price = state.price + action.payload;
         },
         // уменьшаем цену
-        decreasePrice: (state, action) => {
+        decreasePrice: (state, action: PayloadAction<number>) => {
             state.price = state.price - action.payload;
         },
         // перемещение ингрединетов dnd
-        moveCard: (state, action) => {
+        moveCard: (state, action: PayloadAction<{dragIndex: number, hoverIndex: number}>) => {
             const dragCard = state.burgerIngredients[action.payload.dragIndex];
             state.burgerIngredients.splice(action.payload.dragIndex, 1);
             state.burgerIngredients.splice(action.payload.hoverIndex, 0, dragCard);
@@ -104,8 +121,6 @@ export const {
     getIngredientsRequest, 
     getIngredientsSuccess, 
     getIngredientsFailed, 
-    showIngredient,
-    closeIngredient,
     getNumberOrderSuccess,
     getNumberOrderFailed,
     getburgerIngredients,
@@ -116,4 +131,6 @@ export const {
     increasePrice,
     decreasePrice,
     moveCard
-} = burgerIngredientsReducer.actions;
+} = burgerIngredientsSlice.actions;
+
+export default burgerIngredientsSlice.reducer;

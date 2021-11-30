@@ -22,8 +22,8 @@ type TItems = {
 const Items: React.FC<TItems> = ({title, characteristic}) => {
     return (
         <div className={IngredientDetailsStyles.item}>
-            <p className='text_color_inactive text text_type_main-default'>{title}</p>
-            <p className='text_color_inactive text text_type_digits-default'>{characteristic}</p>
+            <p className='text_color_inactive text text_type_main-default' data-qa='ingredient-characteristic-title'>{title}</p>
+            <p className='text_color_inactive text text_type_digits-default' data-qa='ingredient-characteristic'>{characteristic}</p>
         </div> 
     )
 }
@@ -65,7 +65,7 @@ function IngredientDetails({isModal}: TIngredientDetailsProps): React.ReactEleme
         <div className={!isModal ? `${IngredientDetailsStyles.page}` : 'ml-25 mr-25'}>
             {!isModal && <h3 className='text text_type_main-large'>Детали ингредиента</h3>}
             <img src={ingredient.image} className={`${IngredientDetailsStyles.img} mb-4`} alt='изображение ингредиента'/>
-            <h5 className={`${IngredientDetailsStyles.title} text text_type_main-medium mb-8`}>{ingredient.name}</h5>
+            <h5 className={`${IngredientDetailsStyles.title} text text_type_main-medium mb-8`} data-qa='ingredient-name'>{ingredient.name}</h5>
             <div className={`${IngredientDetailsStyles.charectiristics} mb-15`}>
                 <Items title='Калории, ккал' characteristic={ingredient.calories} />
                 <Items title='Белки, г' characteristic={ingredient.proteins} />

@@ -49,7 +49,9 @@ function Modal({onModalClose, title, isOpened, children}: TModalProps): React.Re
                 <div className={`${modalStyles.modal} pl-10 pr-10 pb-10 pt-10`}>
                     <div className={modalStyles.header}>
                         <h3 className='text text_type_main-large'>{title}</h3>
-                        <CloseIcon type="primary" onClick={onModalClose} />
+                        <div data-qa='close-icon' onClick={onModalClose} >
+                            <CloseIcon type="primary" />
+                        </div>
                     </div>
                     {children}
                 </div>

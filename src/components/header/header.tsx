@@ -16,7 +16,7 @@ function AppHeader(): React.ReactElement {
     return (
         <header className={`${headerStyles.header} pt-4 pb-4`}>
             <div className={headerStyles.items}>
-                <Link to='/' className={`${headerStyles.item} mr-2 pt-4 pb-4 pl-5 pr-5`}>
+                <Link to='/' data-qa='main-link' className={`${headerStyles.item} mr-2 pt-4 pb-4 pl-5 pr-5`}>
                     <BurgerIcon type={location?.pathname === constructor ? 'primary' : 'secondary'}/>
                     <p className={location?.pathname === constructor ? `${headerStyles.active} ml-2` : 'ml-2 text_color_inactive' }>Конструктор</p>
                 </Link>
@@ -26,7 +26,7 @@ function AppHeader(): React.ReactElement {
                 </Link>
             </div>
             <Logo />
-            <Link to='/profile' className={`${headerStyles.item} pt-4 pb-4 pl-5 pr-5`}>
+            <Link to='/profile' data-qa='profile-link' className={`${headerStyles.item} pt-4 pb-4 pl-5 pr-5`}>
                 <ProfileIcon type={location?.pathname === profile ? 'primary' : 'secondary'}/>
                 <p className={location?.pathname === profile ? `${headerStyles.active} ml-2 text text_type_main-default` : 'ml-2 text text_type_main-default text_color_inactive' } >Личный кабинет</p>
             </Link>

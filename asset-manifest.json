@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/react-burger/static/css/main.b9cc2ed5.chunk.css",
-    "main.js": "/react-burger/static/js/main.05220b5d.chunk.js",
-    "main.js.map": "/react-burger/static/js/main.05220b5d.chunk.js.map",
-    "runtime-main.js": "/react-burger/static/js/runtime-main.33acee13.js",
-    "runtime-main.js.map": "/react-burger/static/js/runtime-main.33acee13.js.map",
-    "static/css/2.2067dbde.chunk.css": "/react-burger/static/css/2.2067dbde.chunk.css",
-    "static/js/2.c1175f18.chunk.js": "/react-burger/static/js/2.c1175f18.chunk.js",
-    "static/js/2.c1175f18.chunk.js.map": "/react-burger/static/js/2.c1175f18.chunk.js.map",
-    "index.html": "/react-burger/index.html",
-    "static/css/2.2067dbde.chunk.css.map": "/react-burger/static/css/2.2067dbde.chunk.css.map",
-    "static/css/main.b9cc2ed5.chunk.css.map": "/react-burger/static/css/main.b9cc2ed5.chunk.css.map",
-    "static/js/2.c1175f18.chunk.js.LICENSE.txt": "/react-burger/static/js/2.c1175f18.chunk.js.LICENSE.txt",
-    "static/media/fonts.css": "/react-burger/static/media/iceland.77ad7fc2.woff",
-    "static/media/index.css": "/react-burger/static/media/JetBrainsMono-Regular.7f9e93f2.ttf"
+    "main.css": "/static/css/main.ebef5fee.chunk.css",
+    "main.js": "/static/js/main.05220b5d.chunk.js",
+    "main.js.map": "/static/js/main.05220b5d.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.0b65625e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.0b65625e.js.map",
+    "static/css/2.7e45f65a.chunk.css": "/static/css/2.7e45f65a.chunk.css",
+    "static/js/2.c1175f18.chunk.js": "/static/js/2.c1175f18.chunk.js",
+    "static/js/2.c1175f18.chunk.js.map": "/static/js/2.c1175f18.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.7e45f65a.chunk.css.map": "/static/css/2.7e45f65a.chunk.css.map",
+    "static/css/main.ebef5fee.chunk.css.map": "/static/css/main.ebef5fee.chunk.css.map",
+    "static/js/2.c1175f18.chunk.js.LICENSE.txt": "/static/js/2.c1175f18.chunk.js.LICENSE.txt",
+    "static/media/fonts.css": "/static/media/iceland.77ad7fc2.woff",
+    "static/media/index.css": "/static/media/JetBrainsMono-Regular.7f9e93f2.ttf"
   },
   "entrypoints": [
-    "static/js/runtime-main.33acee13.js",
-    "static/css/2.2067dbde.chunk.css",
+    "static/js/runtime-main.0b65625e.js",
+    "static/css/2.7e45f65a.chunk.css",
     "static/js/2.c1175f18.chunk.js",
-    "static/css/main.b9cc2ed5.chunk.css",
+    "static/css/main.ebef5fee.chunk.css",
     "static/js/main.05220b5d.chunk.js"
   ]
 }

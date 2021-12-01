@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from '../../services/hooks';
 import {useEffect } from 'react';
-import {connect, disconnect} from '../../services/store/orderList/actions';
+import {connect, disconnect} from '../../services/actions/orderList';
 import OrderCard from '../orderCard/orderCard';
 import style from './userOrdersList.module.css';
 import { getCookie } from '../../utils/utils';

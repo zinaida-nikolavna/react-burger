@@ -1,3 +1,4 @@
+
 # Учебный проект
 <p>Учебный проект: приложение для бургерной при помощи react</p>
 <p>Создан на Create React App</p>
@@ -26,3 +27,4 @@ $ npm run deploy
 $ npm run test
 </code>
 </pre>
+Проект доступен по ссылке: https://github.com/zinaida-nikolavna/react-burger/

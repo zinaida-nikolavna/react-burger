@@ -3,7 +3,7 @@ import { rootReducer } from '../services/store/index';
 import { socketMiddleware } from '../services/middleware/socket';
 import { ThunkAction } from 'redux-thunk';
 import { ActionCreator, AnyAction } from 'redux';
-import { connect as OrderListWsConnect, disconnect as OrderListWsDisconnect } from '../services/store/orderList/actions';
+import { connect as OrderListWsConnect, disconnect as OrderListWsDisconnect } from './actions/orderList';
 import { 
     wsOpen as OrderListWsOpen, 
     wsClose as OrderListWsClose, 

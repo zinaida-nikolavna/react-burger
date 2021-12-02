@@ -5,7 +5,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { getDateTime } from '../../utils/utils';
 import {TOrder, TIngredientWithKey} from '../../utils/types';
 import { useParams } from 'react-router-dom';
-import {connect, disconnect} from '../../services/store/orderList/actions';
+import {connect, disconnect} from '../../services/actions/orderList';
 import { v4 as uuidv4 } from 'uuid';
 
 type TOrderCardDetailsProps = {

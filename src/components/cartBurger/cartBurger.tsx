@@ -30,7 +30,7 @@ function CartBurger({data}: TCartBurgerProps): React.ReactElement {
 
         return (
             <>
-                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} className={`${cartBurgerStyles.cart} mb-8`}>
+                <div ref={dragRef} style={{ border: isDragging ? '2px solid lightgreen' : '0px'}} data-qa='ingredient-card' className={`${cartBurgerStyles.cart} mb-8`}>
                     <Link
                         className={cartBurgerStyles.link}
                         to={{

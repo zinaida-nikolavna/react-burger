@@ -14,8 +14,10 @@ import {
   decreasePrice } from '../../services/store/burger';
 import BurgerIngredient from '../burgerIngredient/burgerIngredient';
 import { getCookie } from '../../utils/utils';
-import { TIngredient } from '../../utils/types';  
+import { TIngredient, TIngredientWithKey } from '../../utils/types';  
 import { useHistory } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
+ 
 
 type TItem = {
   id: string;
@@ -36,7 +38,7 @@ function BurgerConstructor(): React.ReactElement {
     const ingredientsData = useSelector(state => state.burger.burgerIngredients);
 
     const dispatch = useDispatch();
-    const { orderNumber, orderNumberFailed, orderNumberRequest, price } = useSelector(state => state.burger);
+    const { orderNumber, orderNumberFailed, orderNumberRequest, price, items, counter } = useSelector(state => state.burger);
     const history = useHistory();
     // завершение перемещения по dnd
     const [{ isHover }, dropRef] = useDrop({
@@ -46,9 +48,29 @@ function BurgerConstructor(): React.ReactElement {
       }),
       drop(item: TItem) {
         // меняем количество итемов в конструкторе
-        dispatch(getburgerIngredients(item.id));
+        const itemIngredient: TIngredientWithKey | undefined = items.find((element: TIngredient) => element._id === item.id);
+            if (itemIngredient) {
+                    const itemWithKey = {...itemIngredient, key: uuidv4()};
+                if (itemIngredient.type === 'bun') {
+                    dispatch(getburgerIngredients({ingredient: itemWithKey, price: itemIngredient.price * 2}));
+                } else {
+                    dispatch(getburgerIngredients({ingredient: itemWithKey, price: itemIngredient.price}));
+                }
+        } 
+        
         // меняем счетчик
-        dispatch(increaseCounter({id: item.id, type: item.type}));
+        if (item.id in counter) {
+          // если да, увеличиваем на один
+          dispatch(increaseCounter({id: item.id, counter: counter[item.id] + 1}));
+        } else {
+          if (item.type === 'bun') {
+          // если булка, проставляем изначальное значение 2
+          dispatch(increaseCounter({id: item.id, counter: 2}));
+          } else {
+          // если нет, проставляем значение 1
+            dispatch(increaseCounter({id: item.id, counter: 1}));
+          }
+       } 
       },
     });
 
@@ -103,12 +125,16 @@ function BurgerConstructor(): React.ReactElement {
     const deleteIngredient = (item: TIngredient, index: number, isBun: boolean = false): void => {
 
       dispatch(deleteBurgerIngredient(index));
-      dispatch(decreaseCounter({id: item._id, type: item.type}));
+      if (item.type === 'bun') {
+        dispatch(decreaseCounter({id: item._id, counter: counter[item._id] -2}));
+      } else {
+        dispatch(decreaseCounter({id: item._id, counter: counter[item._id] -1}));
+      }
       dispatch(decreasePrice(isBun ? item.price * 2 : item.price));
     };
 
     return (
-        <section  ref={dropRef} style={{border}} className={`${burgerConstructorStyles.list} mt-25`}>
+        <section  ref={dropRef} style={{border}} className={`${burgerConstructorStyles.list} mt-25`} data-qa='constructor-container'>
           <div className={burgerConstructorStyles.wrapper}>
             <div className={`${burgerConstructorStyles.flexEnd}`}>
                 {bun && <ConstructorElement 
@@ -137,7 +163,7 @@ function BurgerConstructor(): React.ReactElement {
                     <p className="text text_type_digits-medium mr-2">{price}</p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="large" onClick={() => getOrder()}>
+                <Button data-qa='order-button' type="primary" size="large" onClick={() => getOrder()}>
                     Оформить заказ
                 </Button>
             </div>

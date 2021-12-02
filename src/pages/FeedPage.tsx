@@ -2,7 +2,7 @@ import {useEffect } from 'react';
 import { useSelector, useDispatch } from '../services/hooks';
 import styleOrder from './FeedPage.module.css';
 import OrderCard from '../components/orderCard/orderCard';
-import {connect, disconnect} from '../services/store/orderList/actions';
+import {connect, disconnect} from '../services/actions/orderList';
 import {TOrder} from '../utils/types';
 
 /**
